@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'useractions',
     'users',
 ]
-AUTH_USER_MODEL = 'users.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'djangoMusic.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'MyMusic',
+        'USER': 'root',
+        'PASSWORD': 'Duc871997',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '',
     }
 }
 
