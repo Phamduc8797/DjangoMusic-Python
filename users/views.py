@@ -2,5 +2,10 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
+from django.views.generic import CreateView
+from .forms import RegisterForm
 
-# Create your views here.
+class RegisterView(CreateView):
+    form_class = RegisterForm
+    template_name = 'users/register.html'
+    success_url = '/admin/'

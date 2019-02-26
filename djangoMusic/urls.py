@@ -15,7 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from users.views import RegisterView
+from django.contrib.auth.views import LoginView
+from django.views.generic import TemplateView
+from musics.views import HomeView, LogoutView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', HomeView.as_view(), name='home'),
+    url(r'^register/$', RegisterView.as_view(), name='register'),
+    url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
+    url(r'^band/$', TemplateView.as_view(template_name='homes/band.html'), name='bandview'),
+    url(r'^tour/$', TemplateView.as_view(template_name='homes/tour.html'), name='tourview'),
+    url(r'^contact/$', TemplateView.as_view(template_name='homes/contact.html'), name='contactview'),
 ]
