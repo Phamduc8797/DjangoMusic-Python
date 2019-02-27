@@ -7,5 +7,5 @@ from .forms import RegisterForm
 
 class RegisterView(CreateView):
     form_class = RegisterForm
-    template_name = 'users/register.html'
-    success_url = '/admin/'
+    template_name = 'registration/register.html'
+    success_url = '/'

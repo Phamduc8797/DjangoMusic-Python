@@ -7,6 +7,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.conf import settings
 
+from .models import Singer
+
 after_logout = settings.LOGOUT_REDIRECT_URL
 
 class HomeView(ListView):
@@ -16,3 +18,12 @@ class HomeView(ListView):
 
 class LogoutView(LoginRequiredMixin, LogoutView):
     next_page = after_logout
+
+class ListSingerView(ListView):
+    model = Singer       
+    def get(self, request, *args, **kwargs):
+        template_name = 'singers/list-singer.html'
+        obj = {
+            'listcontents': Singer.objects.all()
+        }
+        return render(request, template_name, obj)

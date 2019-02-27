@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'djangoMusic.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'MyMusic',
+        'NAME': 'BMusic',
         'USER': 'root',
         'PASSWORD': 'Duc871997',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
