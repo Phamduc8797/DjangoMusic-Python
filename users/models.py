@@ -8,6 +8,7 @@ User = settings.AUTH_USER_MODEL
 
 class CustomUser(models.Model):
     user = models.OneToOneField(User)
+    photo = models.ImageField(upload_to='static/images/uploads/users')
     address = models.CharField(max_length=255, blank=True)
     phone = models.CharField(max_length=20, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)

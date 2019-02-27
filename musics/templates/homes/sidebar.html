@@ -10,10 +10,10 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{% url 'home' %}">HOME</a></li>
-                <li><a href="{% url 'bandview' %}">BAND</a></li>
-                <li><a href="{% url 'tourview' %}">TOUR</a></li>
-                <li><a href="{% url 'contactview' %}">CONTACT</a></li>
+                <li><a href="{% url 'home' %}" {% if request.path == "/" %}style="color:white"{% endif %}>HOME</a></li>
+                <li><a href="{% url 'list-singer' %}" {% if request.path == "/list-singer/" %}style="color:white"{% endif %}>SINGER</a></li>
+                <li><a href="{% url 'tourview' %}" {% if request.path == "/tour/" %}style="color:white"{% endif %}>TOUR</a></li>
+                <li><a href="{% url 'contactview' %}" {% if request.path == "/contact/" %}style="color:white"{% endif %}>CONTACT</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">SIGN OUT</a></li>
                 {% else %}

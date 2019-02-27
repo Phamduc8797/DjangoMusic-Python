@@ -1,17 +1,16 @@
+{% extends "homes/layout.html" %}
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'stylesheets/css/login.css' %}">
-<link rel="stylesheet" href="{% static 'bootstrap3/bootstrap.min.css' %}">
-<script src="{% static 'jquery/jquery-3.3.1.min.js' %}"></script>
-<script src="{% static 'bootstrap3/bootstrap.min.js' %}"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<title>Login</title>
-
-
-
-
-
-
-<div class="login-form">
+{% block title %}
+    Sign in | {{ block.super }}
+{% endblock title %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap3/bootstrap.min.css' %}">
+    <script src="{% static 'jquery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap3/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <br> <br>
+    <div class="login-form">
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
             <h2 class="text-center">Sign in</h2>  
@@ -57,3 +56,4 @@
         </form>
         <p class="text-center text-muted small">Don't have an account? <a href="{% url 'register' %}">Sign up here!</a></p>
     </div>
+{% endblock content %}
