@@ -1,0 +1,57 @@
+{% extends "homes/layout.html" %}
+{% load static %}
+{% block title %}
+    Contact | {{ block.super }}
+{% endblock title %}
+{% block content %}
+  <div id="contact" class="container">
+    <h3 class="text-center">Contact</h3>
+    <p class="text-center"><em>We love our fans!</em></p>
+    <div class="row">
+      <div class="col-md-4">
+        <p>Contact for us.</p>
+        <p><span class="glyphicon glyphicon-map-marker"></span> My Dinh, Hanoi</p>
+        <p><span class="glyphicon glyphicon-phone"></span> Phone: 0967247549</p>
+        <p><span class="glyphicon glyphicon-envelope"></span> Email: phamduc8797@mail.com</p>
+      </div>
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-sm-6 form-group">
+              <input class="form-control" id="name" name="name" placeholder="Name" type="text" >
+            </div>
+            <div class="col-sm-6 form-group">
+              <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+            </div>
+          </div>
+          <textarea class="form-control" id="content" name="content" placeholder="content" rows="5"></textarea>
+          <br>
+          {% if form.errors %}
+              <p style="color: red">Send contact failed. Please try again.</p>
+          {% endif %}
+          <div class="row"> 
+            <div class="col-md-12 form-group">
+              <button class="btn pull-right" type="submit">Send</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <br>
+    <h3 class="text-center">From The Blog</h3>  
+    <ul class="nav nav-tabs">
+      {% for contact in listcontents %}
+        <li {% if contact.name == 'Im Duc' %}class="active"{% endif %}><a data-toggle="tab" href="#{{ contact.id }}">{{ contact.name }}</a></li>
+      {% endfor %}
+    </ul>
+    <div class="tab-content">
+      {% for contact in listcontents %}
+        <div id="{{ contact.id }}" class="tab-pane {% if contact.name == 'Im Duc' %}fade in active {% endif %}">
+          <h2>{{ contact.email }}</h2>
+          <p>{{ contact.content }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}
