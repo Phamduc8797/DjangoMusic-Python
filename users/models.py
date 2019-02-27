@@ -8,7 +8,6 @@ User = settings.AUTH_USER_MODEL
 
 class CustomUser(models.Model):
     user = models.OneToOneField(User)
-    email = models.EmailField(unique=True)
     address = models.CharField(max_length=255, blank=True)
     phone = models.CharField(max_length=20, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
