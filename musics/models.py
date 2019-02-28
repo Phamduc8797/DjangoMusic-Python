@@ -39,6 +39,7 @@ class Singer(models.Model):
 class Song(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     photo = models.OneToOneField(Image)
+    urlsong = models.FileField(upload_to='static/medias/uploads')
     name = models.CharField(max_length=255, null=False, blank=False)
     singer = models.ForeignKey(Singer, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

@@ -28,7 +28,16 @@
           <textarea class="form-control" id="content" name="content" placeholder="content" rows="5"></textarea>
           <br>
           {% if form.errors %}
-              <p style="color: red">Send contact failed. Please try again.</p>
+            <div class="alert alert-danger">
+                <strong>Wrong something!!</strong>
+            </div>
+          {% endif %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-success">
+                <strong>{{ message }}</strong>
+              </div>
+            {% endfor %}
           {% endif %}
           <div class="row"> 
             <div class="col-md-12 form-group">
