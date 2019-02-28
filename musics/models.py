@@ -18,7 +18,7 @@ class Image(models.Model):
 class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=False, blank=False)
-    description = models.CharField(max_length=255, blank=True)
+    description = models.TextField(max_length=255, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -29,7 +29,7 @@ class Singer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     photo = models.OneToOneField(Image)
     name = models.CharField(max_length=255, null=False, blank=False)
-    description = models.CharField(max_length=255, blank=True)
+    description = models.TextField(max_length=255, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -42,7 +42,7 @@ class Song(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
     singer = models.ForeignKey(Singer, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    description = models.CharField(max_length=255, blank=True)
+    description = models.TextField(max_length=255, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
