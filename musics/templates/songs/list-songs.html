@@ -1,0 +1,97 @@
+{% extends "homes/layout.html" %}
+{% load static %}
+{% block title %}
+    List Songs | {{ block.super }}
+{% endblock title %}
+{% block content %}
+
+
+    <div id="tour" class="bg-1">
+        <div class="container">
+            <h3 class="text-center">LIST SONGS</h3>
+            <p class="text-center">Lorem ipsum we'll play you some music.<br> Remember to book your tickets!<br><br></p>
+            <ul class="list-group">
+                <li class="list-group-item">September <span class="label label-danger">Sold Out!</span></li>
+                <li class="list-group-item">October <span class="label label-danger">Sold Out!</span></li> 
+                <li class="list-group-item">November <span class="badge">3</span></li> 
+            </ul>                
+            <div class="row text-center">
+                {% for song in songs %}
+                    <div class="col-sm-4">
+                        <div class="thumbnail">
+                            <img src="/{{ song.photo.url }}" alt="Paris" style="width:400px; height:300px">                            
+                            <p><strong>{{ song.name }}</strong></p>
+                            <p>{{ song.singer.name }}</p>
+                            <button class="btn" data-toggle="modal" data-target="#playsong{{ song.id }}">Play</button>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="playsong{{ song.id }}" role="dialog" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog">                              
+                        <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close stopsong" data-dismiss="modal">&times;</button>
+                                    <h4><span class="glyphicon glyphicon-music"></span> {{ song.name }}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <audio src="/{{ song.urlsong }}" controls id="song-{{ song.id }}"></audio><br>
+                                    <span class="asdwasas">
+                                        <button class="btn" title="Repeat on" onclick="repeatsongon();">
+                                            <i class="glyphicon glyphicon-repeat"></i>
+                                        </button>
+                                    </span>
+                                    <button class="btn playsong{{ song.id }}" title="play">
+                                        <i class="glyphicon glyphicon-play"></i>
+                                    </button>
+                                    <button class="btn pausesong{{ song.id }}" title="Pause">
+                                        <i class="glyphicon glyphicon-pause"></i>
+                                    </button>
+                                    <button class="btn stopsong" title="Stop">
+                                        <i class="glyphicon glyphicon-stop"></i>
+                                    </button>                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger btn-default pull-left stopsong" data-dismiss="modal">
+                                        <span class="glyphicon glyphicon-remove"></span> Cancel
+                                    </button>
+                                    <script>
+                                        function repeatsongon(){
+                                            $.each($('audio'), function () {
+                                                this.loop = true;
+                                            });
+                                            $(".asdwasas").html("<button class='btn' title='Repeat off' onclick='repeatsongoff();'><i style='color: red' class='glyphicon glyphicon-repeat'></button>");
+                                        }
+                                        function repeatsongoff(){
+                                            $.each($('audio'), function () {
+                                                this.loop = false;
+                                            });
+                                            $(".asdwasas").html("<button class='btn' title='Repeat on' onclick='repeatsongon();'><i class='glyphicon glyphicon-repeat'></i></button>");
+                                        }
+                                        $(document).ready(function(){
+                                            $(".stopsong").click(function(){
+                                                $.each($('audio'), function () {
+                                                    this.pause();
+                                                    this.currentTime = 0;
+                                                });
+                                            });
+                                            $(".playsong{{ song.id }}").click(function(){
+                                                $.each($('#song-{{ song.id }}'), function () {
+                                                    this.play();
+                                                });
+                                            });
+                                            $(".pausesong{{ song.id }}").click(function(){
+                                                $.each($('#song-{{ song.id }}'), function () {
+                                                    this.pause();
+                                                });
+                                            });                                          
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
