@@ -50,13 +50,20 @@
     <br>
     <h3 class="text-center">From The Blog</h3>  
     <ul class="nav nav-tabs">
+      {% if firstcontact %}
+        <li class="active"><a data-toggle="tab" href="#{{ firstcontact.id }}">{{ firstcontact.name }}</a></li>
+      {% endif %}
       {% for contact in listcontents %}
-        <li {% if contact.name == 'Im Duc' %}class="active"{% endif %}><a data-toggle="tab" href="#{{ contact.id }}">{{ contact.name }}</a></li>
+        <li><a data-toggle="tab" href="#{{ contact.id }}">{{ contact.name }}</a></li>
       {% endfor %}
     </ul>
     <div class="tab-content">
+      <div id="{{ firstcontact.id }}" class="tab-pane fade in active">
+        <h2>{{ firstcontact.email }}</h2>
+        <p>{{ firstcontact.content }}</p>
+      </div>
       {% for contact in listcontents %}
-        <div id="{{ contact.id }}" class="tab-pane {% if contact.name == 'Im Duc' %}fade in active {% endif %}">
+        <div id="{{ contact.id }}" class="tab-pane">
           <h2>{{ contact.email }}</h2>
           <p>{{ contact.content }}</p>
         </div>

@@ -3,21 +3,14 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 User = settings.AUTH_USER_MODEL
-class Image(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, null=False, blank=False)
-    url = models.ImageField(upload_to='static/images/uploads')
-    timestamp = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
 
 class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=False, blank=False)
+    photo = models.ImageField(upload_to='static/images/uploads', blank=True)
     description = models.TextField(max_length=255, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -27,7 +20,7 @@ class Category(models.Model):
 
 class Singer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    photo = models.OneToOneField(Image)
+    photo = models.ImageField(upload_to='static/images/uploads', blank=True)
     name = models.CharField(max_length=255, null=False, blank=False)
     description = models.TextField(max_length=255, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -38,7 +31,7 @@ class Singer(models.Model):
 
 class Song(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    photo = models.OneToOneField(Image)
+    photo = models.ImageField(upload_to='static/images/uploads', blank=True)
     urlsong = models.FileField(upload_to='static/medias/uploads')
     name = models.CharField(max_length=255, null=False, blank=False)
     singer = models.ForeignKey(Singer, on_delete=models.CASCADE)
@@ -49,3 +42,6 @@ class Song(models.Model):
 
     def __str__(self):
         return self.name 
+
+    def get_absolute_url(self):
+        return reverse('list-songs', kwargs={})
