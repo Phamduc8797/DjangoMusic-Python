@@ -10,7 +10,7 @@ User = settings.AUTH_USER_MODEL
 class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=False, blank=False)
-    photo = models.ImageField(upload_to='static/images/uploads', blank=True)
+    photo = models.ImageField(upload_to='static/images/uploads', blank=True, default="static/images/default.png")
     description = models.TextField(max_length=255, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -20,7 +20,7 @@ class Category(models.Model):
 
 class Singer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='static/images/uploads', blank=True)
+    photo = models.ImageField(upload_to='static/images/uploads', blank=True, default="static/images/default.png")
     name = models.CharField(max_length=255, null=False, blank=False)
     description = models.TextField(max_length=255, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -31,7 +31,7 @@ class Singer(models.Model):
 
 class Song(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='static/images/uploads', blank=True)
+    photo = models.ImageField(upload_to='static/images/uploads', blank=True, default="static/images/default.png")
     urlsong = models.FileField(upload_to='static/medias/uploads')
     name = models.CharField(max_length=255, null=False, blank=False)
     singer = models.ForeignKey(Singer, on_delete=models.CASCADE)
@@ -44,4 +44,4 @@ class Song(models.Model):
         return self.name 
 
     def get_absolute_url(self):
-        return reverse('list-songs', kwargs={})
+        return reverse('detail-song', kwargs={'pk': self.id})

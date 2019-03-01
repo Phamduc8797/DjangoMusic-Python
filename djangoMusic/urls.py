@@ -18,7 +18,7 @@ from django.contrib import admin
 from users.views import RegisterView
 from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
-from musics.views import HomeView, LogoutView, ListSingerView, ListSongView
+from musics.views import HomeView, LogoutView, ListSingerView, ListSongView, DetailSongView
 from useractions.views import ContactCreateView, UploadSongView
 
 urlpatterns = [
@@ -32,4 +32,5 @@ urlpatterns = [
     url(r'^tour/$', TemplateView.as_view(template_name='homes/tour.html'), name='tourview'),
     url(r'^contact/$', ContactCreateView.as_view(), name='contactview'),
     url(r'^upload-song/$', UploadSongView.as_view(), name='upload-song'),
+    url(r'^detail-song/(?P<pk>[-\w]+)$', DetailSongView.as_view(), name='detail-song'),
 ]

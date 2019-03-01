@@ -11,7 +11,7 @@ from .models import Category, Singer, Song
 
 @admin.register(Song)
 class SongAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user', 'photo', 'singer', 'urlsong', 'category', 'description', 'timestamp', 'updated')
+    list_display = ('id', 'name', 'user', 'photo', 'singer', 'urlsong', 'category', 'description', 'timestamp', 'updated')
 
 @admin.register(Singer)
 class SingerAdmin(admin.ModelAdmin):
