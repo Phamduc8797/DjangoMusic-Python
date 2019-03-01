@@ -4,10 +4,13 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.views.generic import CreateView
 from .models import Comment, Contact, Like
-from .forms import ContactCreateForm
+from musics.models import Singer, Category
+from .forms import ContactCreateForm, UploadSongForm
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class ContactCreateView(SuccessMessageMixin, CreateView):
+class ContactCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    login_url = '/login/'
     template_name = 'contacts/contact.html'
     form_class = ContactCreateForm
     success_message = 'Send contact successfully!'
@@ -41,6 +44,34 @@ class ContactCreateView(SuccessMessageMixin, CreateView):
     def get(self, request, *args, **kwargs):
         template_name = 'contacts/contact.html'
         obj = {
-            'listcontents': Contact.objects.all()[:7]
+            'listcontents': Contact.objects.all()[1:7],
+            'firstcontact': Contact.objects.first()
         }
+        return render(request, template_name, obj)
+
+class UploadSongView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    login_url = '/login/'
+    template_name = 'songs/upload-song.html'
+    form_class = UploadSongForm
+    success_message = 'Upload song successfully!'
+
+    def get_form_kwargs(self):
+        kwargs = super(UploadSongView, self).get_form_kwargs()
+        print(kwargs)
+        return kwargs
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        return super(UploadSongView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        template_name = 'songs/upload-song.html'
+        obj = {
+            'singers': Singer.objects.all(),
+            'categories': Category.objects.all()
+        }
+        print(Singer.objects.first())
+        print(Category.objects.first())
+        print(self.request.user)
         return render(request, template_name, obj)

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Image, Category, Singer, Song
+from .models import Category, Singer, Song
 
 # admin.site.register(Image)
 # admin.site.register(Category)
@@ -19,8 +19,4 @@ class SingerAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user', 'description', 'timestamp', 'updated')
-
-@admin.register(Image)
-class ImageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user', 'url', 'timestamp', 'updated')
+    list_display = ('name', 'user', 'photo', 'description', 'timestamp', 'updated')

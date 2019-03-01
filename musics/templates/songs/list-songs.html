@@ -1,11 +1,9 @@
 {% extends "homes/layout.html" %}
 {% load static %}
 {% block title %}
-    List Songs | {{ block.super }}
+    Songs | {{ block.super }}
 {% endblock title %}
 {% block content %}
-
-
     <div id="tour" class="bg-1">
         <div class="container">
             <h3 class="text-center">LIST SONGS</h3>
@@ -19,9 +17,10 @@
                 {% for song in songs %}
                     <div class="col-sm-4">
                         <div class="thumbnail">
-                            <img src="/{{ song.photo.url }}" alt="Paris" style="width:400px; height:300px">                            
-                            <p><strong>{{ song.name }}</strong></p>
-                            <p>{{ song.singer.name }}</p>
+                            <img src="/{{ song.photo }}" alt="Paris" style="width:400px; height:300px">                            
+                            <p><strong><span class="glyphicon glyphicon-music"></span> {{ song.name }}</strong></p>
+                            <p>Singer: {{ song.singer.name }}</p>
+                            <p>Category: {{ song.category.name }}</p>
                             <button class="btn" data-toggle="modal" data-target="#playsong{{ song.id }}">Play</button>
                         </div>
                     </div>
@@ -40,7 +39,7 @@
                                             <i class="glyphicon glyphicon-repeat"></i>
                                         </button>
                                     </span>
-                                    <button class="btn playsong{{ song.id }}" title="play">
+                                    <button class="btn playsong{{ song.id }}" title="Play">
                                         <i class="glyphicon glyphicon-play"></i>
                                     </button>
                                     <button class="btn pausesong{{ song.id }}" title="Pause">

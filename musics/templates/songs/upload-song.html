@@ -1,0 +1,83 @@
+{% extends "homes/layout.html" %}
+{% load static %}
+{% block title %}
+    Upload Song | {{ block.super }}
+{% endblock title %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap3/bootstrap.min.css' %}">
+    <script src="{% static 'jquery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap3/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <br> <br>
+    <div class="container" style="width:500px">
+        <div class="col">
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Wrong something!!</strong>
+                    {% for err in form.errors %}
+                    <strong>{{ err }}</strong>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-success">
+                    <strong>{{ message }}</strong>
+                </div>
+                {% endfor %}
+            {% endif %}
+            <h2 class="text-center">Upload Song</h2>
+            <form action="{% url 'upload-song' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:20px;">Name song</span>
+                        <input type="text" class="form-control" name="name" placeholder="Name song..." required="required">				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:51px;">Singer</span>
+                        <select name="singer" class="form-control">
+                            {% for singer in singers %}
+                                <option value="{{ singer.id }}">{{ singer.name }}</option>
+                            {% endfor %}
+                        </select>			
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:35px;">Category</span>
+                        <select name="category" class="form-control">
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:21px;">Description</span>
+                        <input type="text" class="form-control" name="description" placeholder="Description...">				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:56px;">Photo</span>
+                        <input type="file" class="form-control" name="photo">				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:36px;">File song</span>
+                        <input type="file" class="form-control" name="urlsong" placeholder="File song..." required="required">				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary login-btn btn-block">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,7 +1,12 @@
-from django.forms import ModelForm
-from .models import Like, Comment, Contact
+from django import forms
+from .models import Like, Comment, Contact, Song
 
-class ContactCreateForm(ModelForm):
+class ContactCreateForm(forms.ModelForm):
     class Meta:
         model = Contact
         fields = ['name', 'email', 'content',]
+
+class UploadSongForm(forms.ModelForm):
+    class Meta:
+        model = Song
+        fields = ['name', 'photo', 'urlsong', 'singer', 'category', 'description',]

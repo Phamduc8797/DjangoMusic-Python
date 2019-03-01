@@ -17,6 +17,7 @@ class HomeView(ListView):
         return render(request, "homes/home.html", {})
 
 class LogoutView(LoginRequiredMixin, LogoutView):
+    login_url = '/login/'
     next_page = after_logout
 
 class ListSingerView(ListView):

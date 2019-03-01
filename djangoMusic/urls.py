@@ -19,7 +19,7 @@ from users.views import RegisterView
 from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
 from musics.views import HomeView, LogoutView, ListSingerView, ListSongView
-from useractions.views import ContactCreateView
+from useractions.views import ContactCreateView, UploadSongView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^list-songs/$', ListSongView.as_view(), name='list-songs'),
     url(r'^tour/$', TemplateView.as_view(template_name='homes/tour.html'), name='tourview'),
     url(r'^contact/$', ContactCreateView.as_view(), name='contactview'),
+    url(r'^upload-song/$', UploadSongView.as_view(), name='upload-song'),
 ]
