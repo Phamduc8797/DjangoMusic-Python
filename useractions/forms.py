@@ -1,5 +1,5 @@
 from django import forms
-from .models import Like, Comment, Contact, Song
+from .models import Like, Comment, Contact, Song, Lyric
 
 class ContactCreateForm(forms.ModelForm):
     class Meta:
@@ -10,3 +10,8 @@ class UploadSongForm(forms.ModelForm):
     class Meta:
         model = Song
         fields = ['name', 'photo', 'urlsong', 'singer', 'category', 'description',]
+
+class CreateLyricForm(forms.ModelForm):
+    class Meta:
+        model = Lyric
+        fields = ['content',]
