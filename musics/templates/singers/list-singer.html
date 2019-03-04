@@ -14,7 +14,7 @@
                 <div class="col-sm-4">
                     <p class="text-center"><strong>{{ singer.name }}</strong></p><br>
                     <a href="#{{ singer.id }}" data-toggle="collapse">
-                        <img src="/{{ singer.photo.url }}" class="img-circle person" alt="Random Name" style="width:220px; height: 220px">
+                        <img src="/{{ singer.photo }}" class="img-circle person" alt="Random Name" style="width:220px; height: 220px">
                     </a>
                     <div id="{{ singer.id }}" class="collapse">
                         {{ singer.description }}

@@ -18,7 +18,7 @@
                     <div class="col-sm-4">
                         <div class="thumbnail">
                             <img src="/{{ song.photo }}" alt="Paris" style="width:400px; height:300px">                            
-                            <p><strong><span class="glyphicon glyphicon-music"></span> {{ song.name }}</strong></p>
+                            <p><strong><a href="{{ song.get_absolute_url }}"><span class="glyphicon glyphicon-music"></span> {{ song.name }}</a></strong></p>
                             <p>Singer: {{ song.singer.name }}</p>
                             <p>Category: {{ song.category.name }}</p>
                             <button class="btn" data-toggle="modal" data-target="#playsong{{ song.id }}">Play</button>

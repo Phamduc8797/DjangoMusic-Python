@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.conf import settings
@@ -37,3 +37,10 @@ class ListSongView(ListView):
             'songs': Song.objects.all()
         }
         return render(request, template_name, obj)
+
+class DetailSongView(DetailView):
+    model = Song
+    template_name = 'songs/song_detail.html'
+    def get_context_data(self, **kwargs):
+        context = super(DetailSongView, self).get_context_data(**kwargs)
+        return context

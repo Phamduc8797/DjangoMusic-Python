@@ -1,0 +1,78 @@
+{% extends "homes/layout.html" %}
+{% load static %}
+{% block title %}
+    {{ object.name }} | {{ block.super }}
+{% endblock title %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="/{{ object.photo }}"
+            alt="" class="img-rounded img-responsive" />
+        </div>
+        <div class="col-md-8">
+            <blockquote>
+                <h2><span class="glyphicon glyphicon-music"></span> {{ object.name }}</h2>
+                <p>Singer: {{ object.singer }}</p>
+                <p>Category: {{ object.category }}</p>
+                <p>Description: {% if description %} {{ object.category }} {% else %} N/A {% endif %}</p>
+            </blockquote>
+        </div>
+        
+    </div>
+    <div class="row">
+        <audio src="/{{ object.urlsong }}" controls style="width:100%" id="controllsong"></audio>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-4">
+            <span class="buttonreqeat">
+                <button class="btn" title="Repeat on" onclick="repeaton();">
+                    <i class="glyphicon glyphicon-repeat"></i>                
+                </button>
+            </span>
+            <span class="buttonplay">
+                <button class="btn" title="Play" onclick="playsong();">
+                    <i class="glyphicon glyphicon-play"></i>                
+                </button>
+            </span>
+            <button class="btn" title="Stop" onclick="stopsong();">
+                <i class="glyphicon glyphicon-stop"></i>
+            </button> 
+            <!-- javascript -->
+            <script>
+                function playsong(){
+                    $.each($('#controllsong'), function () {
+                        this.play();
+                    });
+                    $(".buttonplay").html("<button class='btn' title='Pause' onclick='pausesong();'><i class='glyphicon glyphicon-pause'></button>");
+                }
+                function pausesong(){
+                    $.each($('#controllsong'), function () {
+                        this.pause();
+                    });
+                    $(".buttonplay").html("<button class='btn' title='Play' onclick='playsong();'><i class='glyphicon glyphicon-play'></button>");
+                }
+                function repeaton(){
+                    $.each($('#controllsong'), function () {
+                        this.loop = true;
+                    });
+                    $(".buttonreqeat").html("<button class='btn' title='Repeat off' onclick='repeatoff();'><i style='color: red' class='glyphicon glyphicon-repeat'></button>");
+                }
+                function repeatoff(){
+                    $.each($('#controllsong'), function () {
+                        this.loop = false;
+                    });
+                    $(".buttonreqeat").html("<button class='btn' title='Repeat on' onclick='repeaton();'><i class='glyphicon glyphicon-repeat'></i></button>");
+                }
+                function stopsong(){
+                    $.each($('#controllsong'), function () {
+                        this.pause();
+                        this.currentTime = 0;
+                    });                                        
+                };
+            </script>
+        </div>
+    </div>
+    <hr>
+</div>
+{% endblock content %}
