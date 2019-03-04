@@ -36,3 +36,13 @@ class Contact(models.Model):
     
     def get_absolute_url(self):
         return reverse('contactview', kwargs={})
+
+class Lyric(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    song = models.ForeignKey(Song, on_delete=models.CASCADE)
+    content = models.TextField(null=False, blank=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.content

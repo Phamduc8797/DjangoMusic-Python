@@ -8,6 +8,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.conf import settings
 
 from .models import Singer, Song
+from useractions.models import Lyric, Comment
 
 after_logout = settings.LOGOUT_REDIRECT_URL
 
@@ -41,6 +42,11 @@ class ListSongView(ListView):
 class DetailSongView(DetailView):
     model = Song
     template_name = 'songs/song_detail.html'
+
     def get_context_data(self, **kwargs):
         context = super(DetailSongView, self).get_context_data(**kwargs)
+        get_song_id = Song.objects.get(pk=self.kwargs.get('pk')).id
+        context['lyrics'] = Lyric.objects.filter(song=get_song_id)[1:4]
+        context['lyricfirst'] = Lyric.objects.filter(song=get_song_id).first()
+        context['comments'] = Comment.objects.filter(song=get_song_id)        
         return context
