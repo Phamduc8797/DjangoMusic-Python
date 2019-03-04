@@ -19,7 +19,7 @@ from users.views import RegisterView
 from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
 from musics.views import HomeView, LogoutView, ListSingerView, ListSongView, DetailSongView
-from useractions.views import ContactCreateView, UploadSongView
+from useractions.views import ContactCreateView, UploadSongView, CreateLyricView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^contact/$', ContactCreateView.as_view(), name='contactview'),
     url(r'^upload-song/$', UploadSongView.as_view(), name='upload-song'),
     url(r'^detail-song/(?P<pk>[-\w]+)$', DetailSongView.as_view(), name='detail-song'),
+    url(r'^create-lyric/(?P<pk>[-\w]+)$', CreateLyricView.as_view(), name='create-lyric'),
 ]

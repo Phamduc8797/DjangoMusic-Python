@@ -45,8 +45,11 @@ class DetailSongView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailSongView, self).get_context_data(**kwargs)
-        get_song_id = Song.objects.get(pk=self.kwargs.get('pk')).id
-        context['lyrics'] = Lyric.objects.filter(song=get_song_id)[1:4]
+        # get_song_id = Song.objects.get(pk=self.kwargs.get('pk')).id
+        get_song_id = self.kwargs.get('pk')
+        # print(self.kwargs.get('pk'))
+        # print(self.request.user)
+        context['lyrics'] = Lyric.objects.filter(song=get_song_id)[1:]
         context['lyricfirst'] = Lyric.objects.filter(song=get_song_id).first()
         context['comments'] = Comment.objects.filter(song=get_song_id)        
         return context

@@ -68,7 +68,8 @@
                     $.each($('#controllsong'), function () {
                         this.pause();
                         this.currentTime = 0;
-                    });                                        
+                    });
+                    $(".buttonplay").html("<button class='btn' title='Play' onclick='playsong();'><i class='glyphicon glyphicon-play'></button>");                                      
                 };
             </script>
         </div>
@@ -77,7 +78,45 @@
     <div class="row">
         <div class="col-sm-12">
             <h2>Lyrics <a style="font-size:14px" href="">New lyric</a></h2>
+
+
+
+
+
+
+
+            <div class="row">
+                <form action="{% url 'create-lyric' object.id %}" method="POST">
+                    {% csrf_token %}
+                    <textarea class="form-control" id="content" name="content" placeholder="Content" rows="5" required></textarea>
+                    <button class="btn pull-right" type="submit">Add</button>
+                </form>
+            </div>
+            <div class="row">
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Wrong something!!</strong>
+                    </div>
+                {% endif %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success">
+                        <strong>{{ message }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div><!-- /col-sm-12 -->
+
+
+
+
+
+
+
+
+
+
     </div>
     <div class="row">
         <div class="col-sm-12">
@@ -91,11 +130,11 @@
             </ul>
             <div class="tab-content">
                 <div id="{{ lyricfirst.id }}" class="tab-pane fade in active">
-                <p>{{ lyricfirst.content }}</p>
+                <p>{{ lyricfirst.content|linebreaks }}</p>
                 </div>
                 {% for lyric in lyrics %}
                 <div id="{{ lyric.id }}" class="tab-pane">
-                    <p>{{ lyric.content }}</p>
+                    <p>{{ lyric.content|linebreaks }}</p>
                 </div>
                 {% endfor %}
             </div>

@@ -3,11 +3,12 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.views.generic import CreateView
-from .models import Comment, Contact, Like
-from musics.models import Singer, Category
-from .forms import ContactCreateForm, UploadSongForm
+from .models import Comment, Contact, Like, Lyric
+from musics.models import Singer, Category, Song
+from .forms import ContactCreateForm, UploadSongForm, CreateLyricForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from musics.views import DetailSongView
 
 class ContactCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     login_url = '/login/'
@@ -55,10 +56,10 @@ class UploadSongView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = UploadSongForm
     success_message = 'Upload song successfully!'
 
-    def get_form_kwargs(self):
-        kwargs = super(UploadSongView, self).get_form_kwargs()
-        print(kwargs)
-        return kwargs
+    # def get_form_kwargs(self):
+    #     kwargs = super(UploadSongView, self).get_form_kwargs()
+    #     print(kwargs)
+    #     return kwargs
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -75,3 +76,16 @@ class UploadSongView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         print(Category.objects.first())
         print(self.request.user)
         return render(request, template_name, obj)
+
+class CreateLyricView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    login_url = '/login/'
+    template_name = 'songs/song_detail.html'
+    form_class = CreateLyricForm
+    success_message = 'Contribute lyric successfully!. Pls waiting admin approved.'
+
+    def form_valid(self, form):
+        get_song_id = Song.objects.get(pk=self.kwargs.get('pk'))
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        obj.song = get_song_id
+        return super(CreateLyricView, self).form_valid(form)
