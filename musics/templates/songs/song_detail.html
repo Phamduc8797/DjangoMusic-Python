@@ -1,5 +1,6 @@
 {% extends "homes/layout.html" %}
 {% load static %}
+{% load humanize %}
 {% block title %}
     {{ object.name }} | {{ block.super }}
 {% endblock title %}
@@ -18,7 +19,6 @@
                 <p>Description: {% if description %} {{ object.category }} {% else %} N/A {% endif %}</p>
             </blockquote>
         </div>
-        
     </div>
     <div class="row">
         <audio src="/{{ object.urlsong }}" controls style="width:100%" id="controllsong"></audio>
@@ -74,5 +74,57 @@
         </div>
     </div>
     <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Lyrics <a style="font-size:14px" href="">New lyric</a></h2>
+        </div><!-- /col-sm-12 -->
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-tabs">
+                {% if lyricfirst %}
+                <li class="active"><a data-toggle="tab" href="#{{ lyricfirst.id }}">{{ lyricfirst.user.username }}</a></li>
+                {% endif %}
+                {% for lyric in lyrics %}
+                <li><a data-toggle="tab" href="#{{ lyric.id }}">{{ lyric.user.username }}</a></li>
+                {% endfor %}
+            </ul>
+            <div class="tab-content">
+                <div id="{{ lyricfirst.id }}" class="tab-pane fade in active">
+                <p>{{ lyricfirst.content }}</p>
+                </div>
+                {% for lyric in lyrics %}
+                <div id="{{ lyric.id }}" class="tab-pane">
+                    <p>{{ lyric.content }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Comments  <a style="font-size:14px" href="">New comment</a></h2>
+        </div><!-- /col-sm-12 -->
+    </div><!-- /row -->
+    {% for comment in comments %}
+        <div class="row">
+            <div class="col-sm-1">
+                <div class="thumbnail">
+                    <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                </div><!-- /thumbnail -->
+            </div><!-- /col-sm-1 -->
+            <div class="col-sm-11">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>{{ comment.user.username }}</strong> <span class="text-muted">commented {{ comment.updated|naturaltime }}</span>
+                    </div>
+                    <div class="panel-body">
+                        {{ comment.content }}
+                    </div><!-- /panel-body -->
+                </div><!-- /panel panel-default -->
+            </div><!-- /col-sm-5 -->
+        </div><!-- /row -->
+    {% endfor %}
 </div>
 {% endblock content %}
