@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 from .models import Comment, Contact, Like, Lyric
 from musics.models import Singer, Category, Song
-from .forms import ContactCreateForm, UploadSongForm, CreateLyricForm
+from .forms import ContactCreateForm, UploadSongForm, CreateLyricForm, CreateCommentForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from musics.views import DetailSongView
@@ -89,3 +89,16 @@ class CreateLyricView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         obj.user = self.request.user
         obj.song = get_song_id
         return super(CreateLyricView, self).form_valid(form)
+
+class CreateCommentView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    login_url = '/login/'
+    template_name = 'songs/song_detail.html'
+    form_class = CreateCommentForm
+    success_message = 'You have successfully commented.'
+
+    def form_valid(self, form):
+        get_song_id = Song.objects.get(pk=self.kwargs.get('pk'))
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        obj.song = get_song_id
+        return super(CreateCommentView, self).form_valid(form)

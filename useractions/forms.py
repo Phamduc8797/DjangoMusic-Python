@@ -15,3 +15,8 @@ class CreateLyricForm(forms.ModelForm):
     class Meta:
         model = Lyric
         fields = ['content',]
+
+class CreateCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content',]

@@ -7,6 +7,20 @@
 {% block content %}
 <div class="container">
     <div class="row">
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Wrong something!!</strong>
+            </div>
+        {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success">
+                <strong>{{ message }}</strong>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="row" style="background-color:#DDDDDD;border-radius: 20px;">
         <div class="col-md-4">
             <img src="/{{ object.photo }}"
             alt="" class="img-rounded img-responsive" />
@@ -21,7 +35,7 @@
         </div>
     </div>
     <div class="row">
-        <audio src="/{{ object.urlsong }}" controls style="width:100%" id="controllsong"></audio>
+        <audio src="/{{ object.urlsong }}" controls style="width:100%" id="controllsong" controlsList="nodownload"></audio>
     </div>
     <div class="row">
         <div class="col-md-6 col-md-offset-4">
@@ -37,86 +51,21 @@
             </span>
             <button class="btn" title="Stop" onclick="stopsong();">
                 <i class="glyphicon glyphicon-stop"></i>
-            </button> 
-            <!-- javascript -->
-            <script>
-                function playsong(){
-                    $.each($('#controllsong'), function () {
-                        this.play();
-                    });
-                    $(".buttonplay").html("<button class='btn' title='Pause' onclick='pausesong();'><i class='glyphicon glyphicon-pause'></button>");
-                }
-                function pausesong(){
-                    $.each($('#controllsong'), function () {
-                        this.pause();
-                    });
-                    $(".buttonplay").html("<button class='btn' title='Play' onclick='playsong();'><i class='glyphicon glyphicon-play'></button>");
-                }
-                function repeaton(){
-                    $.each($('#controllsong'), function () {
-                        this.loop = true;
-                    });
-                    $(".buttonreqeat").html("<button class='btn' title='Repeat off' onclick='repeatoff();'><i style='color: red' class='glyphicon glyphicon-repeat'></button>");
-                }
-                function repeatoff(){
-                    $.each($('#controllsong'), function () {
-                        this.loop = false;
-                    });
-                    $(".buttonreqeat").html("<button class='btn' title='Repeat on' onclick='repeaton();'><i class='glyphicon glyphicon-repeat'></i></button>");
-                }
-                function stopsong(){
-                    $.each($('#controllsong'), function () {
-                        this.pause();
-                        this.currentTime = 0;
-                    });
-                    $(".buttonplay").html("<button class='btn' title='Play' onclick='playsong();'><i class='glyphicon glyphicon-play'></button>");                                      
-                };
-            </script>
+            </button>
         </div>
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-12">
-            <h2>Lyrics <a style="font-size:14px" href="">New lyric</a></h2>
-
-
-
-
-
-
-
-            <div class="row">
+        <div class="col-sm-12">  
+            <h2>Lyrics <span style="font-size:14px;color:#337ab7;cursor: pointer;" data-toggle="collapse" data-target="#demo">New lyric</span></h2>
+            <div id="demo" class="collapse">                 
                 <form action="{% url 'create-lyric' object.id %}" method="POST">
                     {% csrf_token %}
                     <textarea class="form-control" id="content" name="content" placeholder="Content" rows="5" required></textarea>
                     <button class="btn pull-right" type="submit">Add</button>
-                </form>
-            </div>
-            <div class="row">
-                {% if form.errors %}
-                    <div class="alert alert-danger">
-                        <strong>Wrong something!!</strong>
-                    </div>
-                {% endif %}
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-success">
-                        <strong>{{ message }}</strong>
-                    </div>
-                    {% endfor %}
-                {% endif %}
+                </form>                   
             </div>
         </div><!-- /col-sm-12 -->
-
-
-
-
-
-
-
-
-
-
     </div>
     <div class="row">
         <div class="col-sm-12">
@@ -142,10 +91,17 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-12">
-            <h2>Comments  <a style="font-size:14px" href="">New comment</a></h2>
-        </div><!-- /col-sm-12 -->
-    </div><!-- /row -->
+            <div class="col-sm-12">  
+                <h2>Comment <span style="font-size:14px;color:#337ab7;cursor: pointer;" data-toggle="collapse" data-target="#newcomment">New comment</span></h2>
+                <div id="newcomment" class="collapse">                 
+                    <form action="{% url 'create-comment' object.id %}" method="POST">
+                        {% csrf_token %}
+                        <textarea class="form-control" id="content" name="content" placeholder="Content" rows="5" required></textarea>
+                        <button class="btn pull-right" type="submit">Add</button>
+                    </form>                   
+                </div>                
+            </div><!-- /col-sm-12 -->
+        </div>
     {% for comment in comments %}
         <div class="row">
             <div class="col-sm-1">
