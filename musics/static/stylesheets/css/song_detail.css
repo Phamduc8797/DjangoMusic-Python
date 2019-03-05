@@ -40,3 +40,10 @@ audio::-webkit-media-controls-volume-slider {
 	border-right-color:#ddd;
 	border-width:8px;
 }
+
+/* display lyric */
+.lyric-close{
+	height: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

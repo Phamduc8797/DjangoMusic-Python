@@ -1,0 +1,42 @@
+{% extends "admin/layouts/layout.html" %}
+{% load static %}
+{% load humanize %}
+{% block titleadmin %}
+    Edit Lyric | {{ block.super }}
+{% endblock titleadmin %}
+{% block contentadmin %}
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'dashboards:dashboard' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'dashboards:list-lyrics' %}">Lyrics</a>
+        </li>
+        <li class="breadcrumb-item active">Edit</li>
+    </ol>
+
+    <!-- DataTables Example -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i> Edit Lyrics
+        </div>
+        <div class="card-body">
+        <div class="table-responsive">
+            <form action="{% url 'dashboards:edit-lyric' object.id %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="comment">Content:</label>
+                    <textarea class="form-control" rows="5" name="content" style="min-height:500px">{{ object.content }}</textarea>
+                </div>
+                <button class="btn btn-secondary" type="submit">Change</button>
+            </form>
+        </div>
+        </div>
+        <div class="card-footer small text-muted"></div>
+    </div>
+
+    <p class="small text-center text-muted my-5">
+        <em></em>
+    </p>
+{% endblock contentadmin %}

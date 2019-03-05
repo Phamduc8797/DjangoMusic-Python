@@ -6,6 +6,20 @@
 {% block content %}
     <div id="tour" class="bg-1">
         <div class="container">
+            <div class="row">
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Wrong something!!</strong>
+                    </div>
+                {% endif %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success">
+                        <strong>{{ message }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
             <h3 class="text-center">LIST SONGS</h3>
             <p class="text-center">Lorem ipsum we'll play you some music.<br> Remember to book your tickets!<br><br></p>
             <ul class="list-group">
@@ -21,6 +35,7 @@
                             <p><strong><a href="{{ song.get_absolute_url }}"><span class="glyphicon glyphicon-music"></span> {{ song.name }}</a></strong></p>
                             <p>Singer: {{ song.singer.name }}</p>
                             <p>Category: {{ song.category.name }}</p>
+                            <p><a href="{% url 'delete-song' song.id  %}">delete</a></p>
                             <button class="btn" data-toggle="modal" data-target="#playsong{{ song.id }}">Play</button>
                         </div>
                     </div>

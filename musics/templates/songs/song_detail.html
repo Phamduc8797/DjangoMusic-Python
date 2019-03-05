@@ -31,11 +31,18 @@
                 <p>Singer: {{ object.singer }}</p>
                 <p>Category: {{ object.category }}</p>
                 <p>Description: {% if description %} {{ object.category }} {% else %} N/A {% endif %}</p>
+                <br>
+                <div>
+                    <span><i class="glyphicon glyphicon-headphones" title="Listening"></i> {{ object.listening }}</span>
+                    <span style="margin-left:20px;"><i class="glyphicon glyphicon-thumbs-up" title="Likes"></i> N/A</span>
+                    <span style="margin-left:20px;"><i class="glyphicon glyphicon-comment" title="Comments"></i> {{ comments.count }}</span>
+                    <span style="margin-left:20px;"><i class="glyphicon glyphicon-file" title="Lyrics"></i> {{ lyrictotal.count }}</span>
+                </div>
             </blockquote>
         </div>
     </div>
     <div class="row">
-        <audio src="/{{ object.urlsong }}" controls style="width:100%" id="controllsong" controlsList="nodownload"></audio>
+        <audio src="/{{ object.urlsong }}" controls style="width:100%" id="controllsong" controlsList="nodownload" autoplay></audio>
     </div>
     <div class="row">
         <div class="col-md-6 col-md-offset-4">
@@ -45,8 +52,8 @@
                 </button>
             </span>
             <span class="buttonplay">
-                <button class="btn" title="Play" onclick="playsong();">
-                    <i class="glyphicon glyphicon-play"></i>                
+                <button class="btn" title="Pause" onclick="pausesong();">
+                    <i class="glyphicon glyphicon-pause"></i>                
                 </button>
             </span>
             <button class="btn" title="Stop" onclick="stopsong();">
@@ -78,48 +85,65 @@
                 {% endfor %}
             </ul>
             <div class="tab-content">
-                <div id="{{ lyricfirst.id }}" class="tab-pane fade in active">
-                <p>{{ lyricfirst.content|linebreaks }}</p>
-                </div>
-                {% for lyric in lyrics %}
-                <div id="{{ lyric.id }}" class="tab-pane">
-                    <p>{{ lyric.content|linebreaks }}</p>
-                </div>
-                {% endfor %}
+                {% if lyricfirst %}
+                    <div id="{{ lyricfirst.id }}" class="tab-pane fade in active ctrllyric lyric-close">
+                        <p>{{ lyricfirst.content|linebreaks }}</p>
+                    </div>
+                {% endif %}
+                {% if lyrics %}
+                    {% for lyric in lyrics %}
+                    <div id="{{ lyric.id }}" class="tab-pane ctrllyric lyric-close">
+                        <p>{{ lyric.content|linebreaks }}</p>                       
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                {% if lyricfirst or lyrics %}
+                    <span id="btncontrollyric"><a href="#controllsong" onclick="showmorelyricfirst();">Show more <i class="glyphicon glyphicon-chevron-down"></i></a></span>
+                {% else %}
+                    No lyric.
+                {% endif %}
             </div>
         </div>
     </div>
-    <hr>
     <div class="row">
-            <div class="col-sm-12">  
-                <h2>Comment <span style="font-size:14px;color:#337ab7;cursor: pointer;" data-toggle="collapse" data-target="#newcomment">New comment</span></h2>
-                <div id="newcomment" class="collapse">                 
-                    <form action="{% url 'create-comment' object.id %}" method="POST">
-                        {% csrf_token %}
-                        <textarea class="form-control" id="content" name="content" placeholder="Content" rows="5" required></textarea>
-                        <button class="btn pull-right" type="submit">Add</button>
-                    </form>                   
-                </div>                
-            </div><!-- /col-sm-12 -->
-        </div>
-    {% for comment in comments %}
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="thumbnail">
-                    <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-                </div><!-- /thumbnail -->
-            </div><!-- /col-sm-1 -->
-            <div class="col-sm-11">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>{{ comment.user.username }}</strong> <span class="text-muted">commented {{ comment.updated|naturaltime }}</span>
-                    </div>
-                    <div class="panel-body">
-                        {{ comment.content }}
-                    </div><!-- /panel-body -->
-                </div><!-- /panel panel-default -->
-            </div><!-- /col-sm-5 -->
-        </div><!-- /row -->
-    {% endfor %}
+        <div class="col-sm-12">  
+            <h2>Comment <span style="font-size:14px;color:#337ab7;cursor: pointer;" data-toggle="collapse" data-target="#newcomment">New comment</span></h2>
+            <div id="newcomment" class="collapse">                 
+                <form action="{% url 'create-comment' object.id %}" method="POST">
+                    {% csrf_token %}
+                    <textarea class="form-control" id="content" name="content" placeholder="Content" rows="5" required></textarea>
+                    <button class="btn pull-right" type="submit">Add</button>
+                </form>                   
+            </div>                
+        </div><!-- /col-sm-12 -->
+    </div>
+    {% if comments %}
+        {% for comment in comments %}
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="thumbnail">
+                        <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                    </div><!-- /thumbnail -->
+                </div><!-- /col-sm-1 -->
+                <div class="col-sm-11">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>{{ comment.user.username }}</strong> <span class="text-muted">commented {{ comment.updated|naturaltime }}</span>
+                        </div>
+                        <div class="panel-body">
+                            {{ comment.content|linebreaks }}
+                            {% if comment.user == request.user %}
+                                <a style="float:right;" href="{% url 'delete-comment' comment.id %}" title="Delete"><i class="glyphicon glyphicon-trash"></i></a>
+                                <a style="float:right;" href="" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                            {% endif %}
+                        </div><!-- /panel-body -->
+                                
+                    </div><!-- /panel panel-default -->
+                </div><!-- /col-sm-5 -->
+            </div><!-- /row -->
+        {% endfor %}
+    {% else %}
+        No comment.
+    {% endif %}
 </div>
 {% endblock content %}
