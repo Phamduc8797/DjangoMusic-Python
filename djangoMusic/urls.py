@@ -19,7 +19,7 @@ from users.views import RegisterView
 from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
 from musics.views import HomeView, LogoutView, ListSingerView, ListSongView, DetailSongView
-from useractions.views import ContactCreateView, UploadSongView, CreateLyricView
+from useractions.views import ContactCreateView, UploadSongView, CreateLyricView, CreateCommentView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -29,9 +29,10 @@ urlpatterns = [
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^list-singer/$', ListSingerView.as_view(), name='list-singer'),
     url(r'^list-songs/$', ListSongView.as_view(), name='list-songs'),
-    url(r'^tour/$', TemplateView.as_view(template_name='homes/tour.html'), name='tourview'),
+    # url(r'^tour/$', TemplateView.as_view(template_name='homes/tour.html'), name='tourview'),
     url(r'^contact/$', ContactCreateView.as_view(), name='contactview'),
     url(r'^upload-song/$', UploadSongView.as_view(), name='upload-song'),
     url(r'^detail-song/(?P<pk>[-\w]+)$', DetailSongView.as_view(), name='detail-song'),
     url(r'^create-lyric/(?P<pk>[-\w]+)$', CreateLyricView.as_view(), name='create-lyric'),
+    url(r'^create-comment/(?P<pk>[-\w]+)$', CreateCommentView.as_view(), name='create-comment'),
 ]

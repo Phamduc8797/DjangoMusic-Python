@@ -23,7 +23,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
-
+    def get_absolute_url(self):
+        return reverse('detail-song', kwargs={'pk': 1})
+        
 class Contact(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)

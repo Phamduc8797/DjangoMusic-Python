@@ -51,5 +51,5 @@ class DetailSongView(DetailView):
         # print(self.request.user)
         context['lyrics'] = Lyric.objects.filter(song=get_song_id)[1:]
         context['lyricfirst'] = Lyric.objects.filter(song=get_song_id).first()
-        context['comments'] = Comment.objects.filter(song=get_song_id)        
+        context['comments'] = Comment.objects.filter(song=get_song_id).order_by('-updated')[0:5] 
         return context
