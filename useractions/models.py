@@ -24,9 +24,6 @@ class Comment(models.Model):
     def __str__(self):
         return self.content
 
-    def get_absolute_url(self):
-        return reverse('detail-song', kwargs={'pk': 1})
-
     def truncatecontent(self):
         trunc = self.content
         if len(trunc)>40:
@@ -66,9 +63,6 @@ class Lyric(models.Model):
 
     def __str__(self):
         return self.content
-
-    def get_absolute_url(self):
-        return reverse('detail-song', kwargs={'pk': 1})
 
     def truncatecontent(self):
         trunc = self.content
