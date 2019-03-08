@@ -1,0 +1,68 @@
+{% extends "admin/layouts/layout.html" %}
+{% load static %}
+{% load humanize %}
+{% block titleadmin %}
+    Contacts | {{ block.super }}
+{% endblock titleadmin %}
+{% block contentadmin %}
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+        <a href="{% url 'dashboards:dashboard' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Contacts</li>
+    </ol>
+
+    <!-- DataTables Example -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i> List Contacts
+        </div>
+        <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Content</th>
+                        <th>Timestamp</th>
+                        <th>Updated</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in contacts %}             
+                        <tr>
+                            <td>{{ contact.name }}</td>
+                            <td>{{ contact.email }}</td>
+                            <td>{{ contact.get_content }}</td>
+                            <td>{{ contact.timestamp|naturaltime }}</td>
+                            <td>{{ contact.updated|naturaltime }}</td>
+                            <td>
+                                <ul class="navbar-nav ml-auto ml-md-0">
+                                    <li class="nav-item dropdown no-arrow">
+                                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-grip-horizontal fa-fw"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                            <a class="dropdown-item" href="#">Detail</a>
+                                            <a class="dropdown-item" href="#">Edit</a>
+                                            <a class="dropdown-item" href="#">Delete</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                        </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </div>
+        <div class="card-footer small text-muted"></div>
+    </div>
+
+    <p class="small text-center text-muted my-5">
+        <em></em>
+    </p>
+{% endblock contentadmin %}

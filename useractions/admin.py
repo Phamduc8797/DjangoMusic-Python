@@ -21,4 +21,4 @@ class ContactAdmin(admin.ModelAdmin):
 
 @admin.register(Lyric)
 class LyricAdmin(admin.ModelAdmin):
-    list_display = ('content', 'song', 'user', 'timestamp', 'updated')
+    list_display = ('content', 'song', 'user', 'accept', 'timestamp', 'updated')

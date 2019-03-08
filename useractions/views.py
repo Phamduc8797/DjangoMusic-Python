@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView, UpdateView
 from .models import Comment, Contact, Like, Lyric
 from musics.models import Singer, Category, Song
 from .forms import ContactCreateForm, UploadSongForm, CreateLyricForm, CreateCommentForm
@@ -102,3 +102,29 @@ class CreateCommentView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         obj.user = self.request.user
         obj.song = get_song_id
         return super(CreateCommentView, self).form_valid(form)
+
+class DeleteLyricView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    login_url = '/login/'
+    model = Lyric
+    success_url = '/dashboard/list-lyrics/'
+    success_message = 'Delete the lyric successfully.'
+
+class DeleteSongView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    login_url = '/login/'
+    model = Song
+    success_url = '/list-songs'
+    success_message = 'Delete the song successfully.'
+
+class DeleteCommentView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    login_url = '/login/'
+    model = Comment
+    success_url = '/detail-song/1'
+    success_message = 'Delete the comment successfully.'
+
+class UpdateLyricView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    login_url = '/login/'
+    model = Lyric
+    template_name = 'admin/lyrics/edit_lyric.html'
+    success_url = '/dashboard/list-lyrics/'
+    success_message = 'Update the lyric successfully.'
+    fields = ['content',]

@@ -13,26 +13,46 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 from users.views import RegisterView
 from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
-from musics.views import HomeView, LogoutView, ListSingerView, ListSongView, DetailSongView
-from useractions.views import ContactCreateView, UploadSongView, CreateLyricView, CreateCommentView
+from musics.views import HomeView, LogoutView, ListSingerView, ListSongView, DetailSongView, DashboardLyricView
+from useractions.views import (
+    ContactCreateView, 
+    UploadSongView, 
+    CreateLyricView, 
+    CreateCommentView, 
+    DeleteLyricView, 
+    DeleteSongView, 
+    DeleteCommentView,
+)
+from useractions.models import Lyric
+from musics import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', HomeView.as_view(), name='home'),
+
     url(r'^register/$', RegisterView.as_view(), name='register'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
+
     url(r'^list-singer/$', ListSingerView.as_view(), name='list-singer'),
     url(r'^list-songs/$', ListSongView.as_view(), name='list-songs'),
-    # url(r'^tour/$', TemplateView.as_view(template_name='homes/tour.html'), name='tourview'),
-    url(r'^contact/$', ContactCreateView.as_view(), name='contactview'),
+    
     url(r'^upload-song/$', UploadSongView.as_view(), name='upload-song'),
+
+    url(r'^contact/$', ContactCreateView.as_view(), name='contactview'),
+
     url(r'^detail-song/(?P<pk>[-\w]+)$', DetailSongView.as_view(), name='detail-song'),
+
     url(r'^create-lyric/(?P<pk>[-\w]+)$', CreateLyricView.as_view(), name='create-lyric'),
     url(r'^create-comment/(?P<pk>[-\w]+)$', CreateCommentView.as_view(), name='create-comment'),
+
+    url(r'^delete-song/(?P<pk>[-\w]+)$', DeleteSongView.as_view(), name='delete-song'),
+    url(r'^delete-comment/(?P<pk>[-\w]+)$', DeleteCommentView.as_view(), name='delete-comment'),
+
+    url(r'^dashboard/', include('useractions.urls', namespace='dashboards')),
 ]

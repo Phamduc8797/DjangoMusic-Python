@@ -17,6 +17,17 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_description(self):
+        trunc = self.description
+        if trunc:
+            if len(trunc)>40:
+                descp = trunc[0:40] + "..."
+            else:
+                descp = trunc[0:40]
+            return descp
+        else:
+            return "N/A"
 
 class Singer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -27,12 +38,24 @@ class Singer(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name 
+        return self.name
+
+    def get_description(self):
+        trunc = self.description
+        if trunc:
+            if len(trunc)>40:
+                descp = trunc[0:40] + "..."
+            else:
+                descp = trunc[0:40]
+            return descp
+        else:
+            return "N/A"
 
 class Song(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='static/images/uploads', blank=True, default="static/images/default.png")
     urlsong = models.FileField(upload_to='static/medias/uploads')
+    listening = models.IntegerField(default=0)
     name = models.CharField(max_length=255, null=False, blank=False)
     singer = models.ForeignKey(Singer, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

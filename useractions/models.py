@@ -23,8 +23,17 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
+
     def get_absolute_url(self):
         return reverse('detail-song', kwargs={'pk': 1})
+
+    def truncatecontent(self):
+        trunc = self.content
+        if len(trunc)>40:
+            lyr = trunc[0:40] + "..."
+        else:
+            lyr = trunc[0:40]
+        return lyr
         
 class Contact(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
@@ -39,10 +48,19 @@ class Contact(models.Model):
     def get_absolute_url(self):
         return reverse('contactview', kwargs={})
 
+    def get_content(self):
+        trunc = self.content
+        if len(trunc)>40:
+            cont = trunc[0:40] + "..."
+        else:
+            cont = trunc[0:40]
+        return cont
+
 class Lyric(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
     content = models.TextField(null=False, blank=False)
+    accept = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -51,3 +69,14 @@ class Lyric(models.Model):
 
     def get_absolute_url(self):
         return reverse('detail-song', kwargs={'pk': 1})
+
+    def truncatecontent(self):
+        trunc = self.content
+        if len(trunc)>40:
+            lyr = trunc[0:40] + "..."
+        else:
+            lyr = trunc[0:40]
+        return lyr
+
+    def abc(self):
+        print(self.user.username)

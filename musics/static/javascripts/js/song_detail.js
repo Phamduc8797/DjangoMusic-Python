@@ -1,3 +1,4 @@
+// control audio
 function playsong(){
     $.each($('#controllsong'), function () {
         this.play();
@@ -29,3 +30,13 @@ function stopsong(){
     });
     $(".buttonplay").html("<button class='btn' title='Play' onclick='playsong();'><i class='glyphicon glyphicon-play'></button>");                                      
 };
+
+// control lyric
+function showmorelyricfirst(){
+    $('.ctrllyric').removeClass("lyric-close");
+    $('#btncontrollyric').html("<a href='#controllsong' onclick='closelyricfirst();'>Compact <i class='glyphicon glyphicon-chevron-up'></i></a>")
+}
+function closelyricfirst(){
+    $('.ctrllyric').addClass("lyric-close");
+    $('#btncontrollyric').html("<a href='#controllsong' onclick='showmorelyricfirst();'>Show more <i class='glyphicon glyphicon-chevron-down'></i></a>")
+}

@@ -1,0 +1,126 @@
+{% extends "admin/layouts/layout.html" %}
+{% load static %}
+{% load humanize %}
+{% block titleadmin %}
+    Lyrics | {{ block.super }}
+{% endblock titleadmin %}
+{% block contentadmin %} 
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>Wrong something!!</strong>
+        </div>
+    {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+        <a href="{% url 'dashboards:dashboard' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Lyrics</li>
+    </ol>
+
+    <!-- DataTables Example -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i> List Lyrics
+        </div>
+        <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Content</th>
+                        <th>Song</th>
+                        <th>Creator</th>
+                        <th>Accept</th>
+                        <th>Timestamp</th>
+                        <th>Updated</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lyric in lyrics %}             
+                        <tr>
+                            <td>{{ lyric.truncatecontent }}</td>
+                            <td>{{ lyric.song.name }}</td>
+                            <td>{{ lyric.user.username }}</td>
+                            <td>
+                                {% if lyric.accept == True %}
+                                    <i style="color:green" class="fas fa-check-circle"></i>
+                                {% else %}
+                                    <i style="color:red" class="fas fa-times-circle"></i>
+                                {% endif %}
+                            </td>
+                            <td>{{ lyric.timestamp|naturaltime }}</td>
+                            <td>{{ lyric.updated|naturaltime }}</td>
+                            <td>
+                                <ul class="navbar-nav ml-auto ml-md-0">
+                                    <li class="nav-item dropdown no-arrow">
+                                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-grip-horizontal fa-fw"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                            {% if lyric.accept == True %}
+                                                <a class="dropdown-item" href="{% url 'dashboards:ignore-lyric' lyric.id %}">Ignore</a>
+                                            {% else %}
+                                                <a class="dropdown-item" href="{% url 'dashboards:accept-lyric' lyric.id %}">Accept</a>
+                                            {% endif %}
+                                            <div class="dropdown-divider"></div>                                         
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal{{ lyric.id }}">Detail</a>
+                                            
+                                            <a class="dropdown-item" href="{% url 'dashboards:edit-lyric' lyric.id %}">Edit</a>
+                                            <a class="dropdown-item" href="{% url 'dashboards:delete-lyric' lyric.id  %}">Delete</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                        </td>
+                        </tr>
+                        <div class="modal fade" id="logoutModal{{ lyric.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Detail Lyric</h5>
+                                    <div class="close">
+                                        <span><i class="fas fa-music"></i> {{ lyric.song.name }}</span>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <audio src="/{{ lyric.song.urlsong }}" controls class="playsongdetail" style="width:100%"></audio> <br>
+                                    <strong>Lyric:</strong> <br>
+                                    {{ lyric.content|linebreaks }}
+                                </div>
+                                <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal" onclick="stopsongdetail();">Cancel</button>
+                                <a class="btn btn-primary" href="{% url 'detail-song' lyric.song.id %}">Got to "{{ lyric.song.name }}" Page</a>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <script>
+                                function stopsongdetail(){                                    
+                                    $.each($('.playsongdetail'), function () {
+                                        this.pause();
+                                        this.currentTime = 0;
+                                    });
+                                };
+                            </script>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+        </div>
+        <div class="card-footer small text-muted"></div>
+    </div>
+
+    <p class="small text-center text-muted my-5">
+        <em></em>
+    </p>
+{% endblock contentadmin %}

@@ -17,6 +17,10 @@
                 <li><a href="{% url 'upload-song' %}" {% if request.path == "/upload-song/" %}style="color:white"{% endif %}>UPLOAD</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">SIGN OUT</a></li>
+                    <li><a href="">HI! {{ user.username.upper }}</a></li>
+                    {% if user.is_superuser %}
+                        <li><a href="{% url 'dashboards:dashboard' %}">DASHBOARDS</a></li>
+                    {% endif %}
                 {% else %}
                     <li><a href="{% url 'login' %}">SIGN IN</a></li>
                 {% endif %}
