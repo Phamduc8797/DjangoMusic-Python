@@ -1,6 +1,6 @@
 from django import forms
 from .models import Like, Comment, Contact, Lyric
-from musics.models import Singer, Song
+from musics.models import Singer, Song, Category
 
 class ContactCreateForm(forms.ModelForm):
     class Meta:
@@ -25,4 +25,9 @@ class CreateCommentForm(forms.ModelForm):
 class CreateSingerForm(forms.ModelForm):
     class Meta:
         model = Singer
+        fields = ['photo', 'name', 'description',]
+
+class AdminCreateCategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
         fields = ['photo', 'name', 'description',]

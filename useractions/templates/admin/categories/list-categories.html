@@ -17,6 +17,11 @@
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i> List Categories
+            
+        </div>
+        
+        <div class="card-body">
+            <a href="{% url 'dashboards:create-category' %}" class="none-textdeco"><i class="fas fa-plus-square"></i> Add Category</a>
         </div>
         <div class="card-body">
         <div class="table-responsive">
@@ -33,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for category in categories %}             
+                    {% for category in categories %}        
                         <tr>
                             <td><img src="/{{ category.photo }}" alt="" style="width:50px"></td>
                             <td>{{ category.name }}</td>
@@ -48,14 +53,37 @@
                                             <i class="fas fa-grip-horizontal fa-fw"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                            <a class="dropdown-item" href="#">Detail</a>
-                                            <a class="dropdown-item" href="#">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#detailcate{{ category.id }}">More info</a>
+                                            <a class="dropdown-item" href="{% url 'dashboards:edit-category' category.id %}">Edit</a>
+                                            <a class="dropdown-item" href="{% url 'dashboards:delete-category' category.id %}">Delete</a>
                                         </div>
                                     </li>
                                 </ul>
                         </td>
                         </tr>
+                        <div class="modal fade" id="detailcate{{ category.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">More info</h5>
+                                    <div class="close">
+                                        <span><i class="fas fa-list"></i> {{ category.name }}</span>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <strong>Songs <span class="badge badge-secondary">
+                                        {{ category.cate_songs.all.count }}
+                                    </span>:</strong>
+                                    {% for song in category.cate_songs.all %}
+                                        {{ song.name }},
+                                    {% endfor %}
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>                                        
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                     {% endfor %}
                 </tbody>
             </table>

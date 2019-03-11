@@ -1,0 +1,50 @@
+{% extends "admin/layouts/layout.html" %}
+{% load static %}
+{% load humanize %}
+{% block titleadmin %}
+    Create Category | {{ block.super }}
+{% endblock titleadmin %}
+{% block contentadmin %}
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'dashboards:dashboard' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'dashboards:list-categories' %}">Categories</a>
+        </li>
+        <li class="breadcrumb-item active">Create Category</li>
+    </ol>
+
+    <!-- DataTables Example -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i> Create Category
+        </div>
+        <div class="card-body">
+        <div class="table-responsive">
+            <form action="{% url 'dashboards:create-category' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="comment">Name<span class="require-field-red">*</span> :</label>
+                    <input type="text" class="form-control" rows="5" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Photo:</label> <br>
+                    <input type="file" rows="5" name="photo">
+                </div>
+                <div class="form-group">
+                    <label for="comment">Description:</label>
+                    <textarea class="form-control" rows="5" name="description"></textarea>
+                </div>
+                <button class="btn btn-secondary" type="submit">Add</button>
+            </form>
+        </div>
+        </div>
+        <div class="card-footer small text-muted"></div>
+    </div>
+
+    <p class="small text-center text-muted my-5">
+        <em></em>
+    </p>
+{% endblock contentadmin %}

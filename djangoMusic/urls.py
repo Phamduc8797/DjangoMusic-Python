@@ -24,8 +24,7 @@ from useractions.views import (
     UploadSongView, 
     CreateLyricView, 
     CreateCommentView, 
-    DeleteLyricView, 
-    DeleteSongView, 
+    DeleteLyricView,
     DeleteCommentView,
 )
 from useractions.models import Lyric
@@ -51,7 +50,6 @@ urlpatterns = [
     url(r'^create-lyric/(?P<pk>[-\w]+)$', CreateLyricView.as_view(), name='create-lyric'),
     url(r'^create-comment/(?P<pk>[-\w]+)$', CreateCommentView.as_view(), name='create-comment'),
 
-    url(r'^delete-song/(?P<pk>[-\w]+)$', DeleteSongView.as_view(), name='delete-song'),
     url(r'^delete-comment/(?P<pk>[-\w]+)$', DeleteCommentView.as_view(), name='delete-comment'),
 
     url(r'^dashboard/', include('useractions.urls', namespace='dashboards')),

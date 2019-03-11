@@ -5,18 +5,6 @@
     Singers | {{ block.super }}
 {% endblock titleadmin %}
 {% block contentadmin %}
-    {% if form.errors %}
-        <div class="alert alert-danger">
-            <strong>Wrong something!!</strong>
-        </div>
-    {% endif %}
-    {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-success">
-            <strong>{{ message }}</strong>
-        </div>
-        {% endfor %}
-    {% endif %}
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
@@ -63,7 +51,7 @@
                                                 <i class="fas fa-grip-horizontal fa-fw"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#detailsinger{{ singer.id }}">More info</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#detailsinger{{ singer.id }}">More info</a>
                                                 <a class="dropdown-item" href="{% url 'dashboards:edit-singer' singer.id %}">Edit</a>
                                                 <a class="dropdown-item" href="{% url 'dashboards:delete-singer' singer.id %}">Delete</a>
                                             </div>
@@ -72,28 +60,28 @@
                                 </td>
                             </tr>
                             <div class="modal fade" id="detailsinger{{ singer.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                                    <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Detail Singer</h5>
-                                            <div class="close">
-                                                <span><i class="fas fa-user-astronaut"></i> {{ singer.name }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="modal-body">
-                                            <strong>Songs:</strong>
-                                            {% for song in songs %}
-                                                {% if song.singer == singer %}
-                                                    {{ song.name }},
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>                                        
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Detail Singer</h5>
+                                        <div class="close">
+                                            <span><i class="fas fa-user-astronaut"></i> {{ singer.name }}</span>
                                         </div>
                                     </div>
+                                    <div class="modal-body">
+                                            <strong>Songs <span class="badge badge-secondary">
+                                                {{ singer.sing_songs.all.count }}
+                                            </span>:</strong>
+                                        {% for song in singer.sing_songs.all %}
+                                            {{ song.name }},
+                                        {% endfor %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>                                        
                                     </div>
                                 </div>
+                                </div>
+                            </div>
                         {% endfor %}
                     </tbody>
                 </table>

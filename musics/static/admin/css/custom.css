@@ -1,3 +1,11 @@
 .none-textdeco:hover{
     text-decoration: none;
 }
+
+.require-field-red{
+    color: red !important;
+}
+
+.w-30pt{
+    width: 30%;
+}

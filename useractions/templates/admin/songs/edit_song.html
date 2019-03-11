@@ -1,0 +1,98 @@
+{% extends "admin/layouts/layout.html" %}
+{% load static %}
+{% load humanize %}
+{% block titleadmin %}
+    Edit Song | {{ block.super }}
+{% endblock titleadmin %}
+{% block contentadmin %}
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'dashboards:dashboard' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'dashboards:list-song' %}">Songs</a>
+        </li>
+        <li class="breadcrumb-item active">Song</li>
+    </ol>
+
+    <!-- DataTables Example -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i> Edit Song
+        </div>
+        <div class="card-body">
+        <div class="table-responsive">
+            <form action="{% url 'dashboards:edit-song' object.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group w-30pt">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:18px;">Name song<span class="require-field-red">*</span></span>
+                        <input type="text" class="form-control" name="name" placeholder="Name song..." value="{{ object.name }}" required>				
+                    </div>
+                </div>
+                <div class="form-group w-30pt">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:60px;">Singer</span>
+                        <select name="singer" class="form-control">
+                            {% for singer in singers %}
+                                <option value="{{ singer.id }}" {% if singer.id == object.singer.id %}selected{% endif %}>{{ singer.name }}</option>
+                            {% endfor %}
+                        </select>			
+                    </div>
+                </div>
+                <div class="form-group w-30pt">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:41px;">Category</span>
+                        <select name="category" class="form-control">
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if category.id == object.category.id %}selected{% endif %}>{{ category.name }}</option>
+                            {% endfor %}
+                        </select>				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:27px;">Description</span>
+                        <textarea name="description" id="description-edit-song" style="min-width:360px;" rows="5">{{ object.description }}</textarea>				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:42px;">File song</span>
+                        <input type="file" name="urlsong">				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:14px;margin-top: 12px">File song old</span>
+                        <audio src="/{{ object.urlsong }}" controls></audio>				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:65px;">Photo</span>
+                        <input type="file" name="photo">				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding-right:39px;">Photo old</span>
+                        <img src="/{{ object.photo }}" style="max-width: 250px; max-height: 250px" alt="">				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-secondary">Change</button>
+                </div>
+            </form>
+        </div>
+        </div>
+        <div class="card-footer small text-muted">
+            <span class="require-field-red">Note:</span> Only Choose File when you want change.
+        </div>
+    </div>
+
+    <p class="small text-center text-muted my-5">
+        <em></em>
+    </p>
+{% endblock contentadmin %}
