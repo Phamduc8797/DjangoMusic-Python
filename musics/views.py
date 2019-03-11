@@ -99,7 +99,8 @@ class DashboardSingerView(View):
     def get(self, request, *args, **kwargs):
         template_name = 'admin/singers/list-singers.html'
         obj = {
-            'singers': Singer.objects.all(),
+            'singers': Singer.objects.all().order_by('-updated'),
+            'songs': Song.objects.all(),
         }
         return render(request, template_name, obj)
 

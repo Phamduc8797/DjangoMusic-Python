@@ -12,7 +12,13 @@ from musics.views import (
     DashboardCategoryView,
     DashboardContactView,
 )
-from .views import DeleteLyricView, UpdateLyricView
+from .views import (
+    DeleteLyricView, 
+    UpdateLyricView, 
+    CreateSingerView, 
+    AdminDeleteSingerView,
+    AdminUpdateSingerView,
+)
 from musics import views
 
 urlpatterns = [
@@ -27,8 +33,12 @@ urlpatterns = [
     url(r'^accept-lyric/(?P<pk>[-\w]+)$', views.accept_lyric, name='accept-lyric'),
     url(r'^ignore-lyric/(?P<pk>[-\w]+)$', views.ignore_lyric, name='ignore-lyric'),
 
+    url(r'^create-singer/$', CreateSingerView.as_view(), name='create-singer'),
+
     url(r'^edit-lyric/(?P<pk>[-\w]+)$', UpdateLyricView.as_view(), name='edit-lyric'),
+    url(r'^edit-singer/(?P<pk>[-\w]+)$', AdminUpdateSingerView.as_view(), name='edit-singer'),
 
     url(r'^delete-lyric/(?P<pk>[-\w]+)$', DeleteLyricView.as_view(), name='delete-lyric'),
+    url(r'^delete-singer/(?P<pk>[-\w]+)$', AdminDeleteSingerView.as_view(), name='delete-singer'),
 ]
 
