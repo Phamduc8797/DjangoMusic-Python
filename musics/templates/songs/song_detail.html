@@ -34,7 +34,16 @@
                 <br>
                 <div>
                     <span><i class="glyphicon glyphicon-headphones" title="Listening"></i> {{ object.listening }}</span>
-                    <span style="margin-left:20px;"><i class="glyphicon glyphicon-thumbs-up" title="Likes"></i> N/A</span>
+                    {% if liked %}
+                        <span style="margin-left:20px;">
+                            <a href="{% url 'dislike-song' object.id %}"><i style="color:#337ab7" class="glyphicon glyphicon-thumbs-up" title="dislike"></i></a> {{ object.song_likes.count }}
+                        </span>
+                        
+                    {% else %}
+                        <span style="margin-left:20px;">
+                            <a href="{% url 'like-song' object.id %}"><i style="color:gray" class="glyphicon glyphicon-thumbs-up" title="like"></i></a> {{ object.song_likes.count }}
+                        </span>
+                    {% endif %}
                     <span style="margin-left:20px;"><i class="glyphicon glyphicon-comment" title="Comments"></i> {{ comments.count }}</span>
                     <span style="margin-left:20px;"><i class="glyphicon glyphicon-file" title="Lyrics"></i> {{ lyrictotal.count }}</span>
                 </div>

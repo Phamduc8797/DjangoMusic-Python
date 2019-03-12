@@ -14,6 +14,9 @@ class Like(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+        return self.user
+
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comments')
     song = models.ForeignKey(Song, on_delete=models.CASCADE, related_name='song_comments')

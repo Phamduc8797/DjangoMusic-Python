@@ -42,7 +42,7 @@
                             <td>{{ song.singer }}</td>
                             <td>{{ song.category }}</td>
                             <td>{{ song.listening }}</td>
-                            <td>N/A</td>
+                            <td>{{ song.song_likes.count }}</td>
                             <td>{{ song.timestamp|naturaltime }}</td>
                             <td>{{ song.updated|naturaltime }}</td>
                             <td>
@@ -94,7 +94,11 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-4"><strong><i class="fas fa-fw fa-thumbs-up"></i>Likes:</strong></div>
-                                        <div class="col-sm-6">N/A</div>
+                                        <div class="col-sm-6">
+                                            <span class="badge badge-secondary" style="height:18px;">
+                                                {{ song.song_likes.count }}
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-4"><strong><i class="fas fa-fw fa-clipboard-list"></i>Lyrics:</strong></div>
