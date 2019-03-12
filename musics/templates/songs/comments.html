@@ -1,0 +1,29 @@
+{% load humanize %}
+{% if comments %}
+{% for comment in comments %}
+    <div class="row">
+        <div class="col-sm-1">
+            <div class="thumbnail">
+                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+            </div><!-- /thumbnail -->
+        </div><!-- /col-sm-1 -->
+        <div class="col-sm-11">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>{{ comment.user.username }}</strong> <span class="text-muted">commented {{ comment.updated|naturaltime }}</span>
+                </div>
+                <div class="panel-body">
+                    {{ comment.content|linebreaks }}
+                    {% if comment.user == current_user %}
+                        <i onclick="deletecomment();" style="float:right;" data-song-id="{{ object }}" data-comment-id="{{ comment.id }}" class="glyphicon glyphicon-trash cpointer deletecomment"></i>
+                        <a style="float:right;" href="" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                    {% endif %}
+                </div><!-- /panel-body -->
+                        
+            </div><!-- /panel panel-default -->
+        </div><!-- /col-sm-5 -->
+    </div><!-- /row -->                
+{% endfor %}
+{% else %}
+No comment.
+{% endif %}

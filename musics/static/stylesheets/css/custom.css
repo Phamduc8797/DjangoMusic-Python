@@ -1,3 +1,10 @@
 .require-field-red{
     color:red;
 }
+.displaylike i {
+    cursor: pointer;
+}
+.cpointer{
+    cursor: pointer;
+    color: #337ab7;
+}

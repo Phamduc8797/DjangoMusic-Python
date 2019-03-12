@@ -18,6 +18,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from musics.views import DetailSongView
 
+from django.core.mail import EmailMessage
+
 class ContactCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     login_url = '/login/'
     template_name = 'contacts/contact.html'
@@ -79,10 +81,7 @@ class UploadSongView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         obj = {
             'singers': Singer.objects.all(),
             'categories': Category.objects.all()
-        }
-        print(Singer.objects.first())
-        print(Category.objects.first())
-        print(self.request.user)
+        }        
         return render(request, template_name, obj)
 
 class CreateLyricView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
@@ -198,15 +197,6 @@ class AdminDeleteSongView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
     def get_success_url(self): 
         return reverse('dashboards:list-song', kwargs={})
-
-class DeleteCommentView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
-    login_url = '/login/'
-    model = Comment
-    success_message = 'Delete the comment successfully.'
-    template_name = 'admin/confirms/confirm_delete.html'
-
-    def get_success_url(self): 
-        return reverse('detail-song', kwargs={'pk': 1})
 
 class UpdateLyricView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     login_url = '/login/'

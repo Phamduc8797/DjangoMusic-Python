@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
+
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,9 +10,14 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.conf import settings
 from django.db.models import F
 from django.core.urlresolvers import reverse
+from django.http import JsonResponse, HttpResponse
+
+from django.core.mail import EmailMessage
 
 from .models import Singer, Song, Category
 from useractions.models import Lyric, Comment, Contact, Like
+
+from django.template.loader import render_to_string
 
 after_logout = settings.LOGOUT_REDIRECT_URL
 
@@ -125,10 +132,20 @@ class DashboardContactView(View):
 
 def accept_lyric(request, pk):
     Lyric.objects.filter(id=pk).update(accept=True)
+    lyr = Lyric.objects.get(id=pk)
+    sog = lyr.song.name
+    to_mail = lyr.user.email
+    email = EmailMessage('[DjangoMusic] Accepted Lyric', 'Your '+sog+' lyrics have been approved.', to=[to_mail])
+    email.send()
     return redirect('dashboards:list-lyrics')
 
 def ignore_lyric(request, pk):
     Lyric.objects.filter(id=pk).update(accept=False)
+    lyr = Lyric.objects.get(id=pk)
+    sog = lyr.song.name
+    to_mail = lyr.user.email
+    email = EmailMessage('[DjangoMusic] Canceled Lyric', 'Your '+sog+' lyrics have been canceled.', to=[to_mail])
+    email.send()
     return redirect('dashboards:list-lyrics')
 
 def like_song(request, pk):
@@ -136,11 +153,23 @@ def like_song(request, pk):
     song = Song.objects.get(id=pk)
     like = Like(user=user, song=song)
     like.save()
-    return redirect('detail-song', pk=pk)
+    like_count = Like.objects.filter(song=song).count()
+    return JsonResponse({'like_count': like_count})
 
 def dislike_song(request, pk):
     user = request.user
     song = Song.objects.get(id=pk)
     like = Like.objects.filter(user=user, song=song)
     like.delete()
-    return redirect('detail-song', pk=pk)
+    like_count = Like.objects.filter(song=song).count()
+    return JsonResponse({'like_count': like_count})
+
+def delete_comment(request, pk, comment_id):
+    user = request.user
+    song = Song.objects.filter(id=pk)
+    comment = Comment.objects.filter(id=comment_id, user=user)
+    comment.delete()
+    listcomments = Comment.objects.filter(song=song)
+    html = render_to_string( 'songs/comments.html', { 'comments': listcomments, 'current_user': user, 'object': pk} )
+    return HttpResponse( json.dumps(html), 'application/json' )
+    
