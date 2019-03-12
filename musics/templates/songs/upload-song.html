@@ -32,13 +32,13 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <div class="input-group">
-                        <span class="input-group-addon" style="padding-right:20px;">Name song</span>
-                        <input type="text" class="form-control" name="name" placeholder="Name song..." required="required">				
+                        <span class="input-group-addon" style="padding-right:20px;">Name song<span class="require-field-red">*</span></span>
+                        <input type="text" class="form-control" name="name" placeholder="Name song..." required>				
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
-                        <span class="input-group-addon" style="padding-right:51px;">Singer</span>
+                        <span class="input-group-addon" style="padding-right:57px;">Singer</span>
                         <select name="singer" class="form-control">
                             {% for singer in singers %}
                                 <option value="{{ singer.id }}">{{ singer.name }}</option>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="form-group">
                     <div class="input-group">
-                        <span class="input-group-addon" style="padding-right:35px;">Category</span>
+                        <span class="input-group-addon" style="padding-right:41px;">Category</span>
                         <select name="category" class="form-control">
                             {% for category in categories %}
                                 <option value="{{ category.id }}">{{ category.name }}</option>
@@ -58,20 +58,20 @@
                 </div>
                 <div class="form-group">
                     <div class="input-group">
-                        <span class="input-group-addon" style="padding-right:21px;">Description</span>
+                        <span class="input-group-addon" style="padding-right:27px;">Description</span>
                         <input type="text" class="form-control" name="description" placeholder="Description...">				
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
-                        <span class="input-group-addon" style="padding-right:56px;">Photo</span>
+                        <span class="input-group-addon" style="padding-right:62px;">Photo</span>
                         <input type="file" class="form-control" name="photo">				
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
-                        <span class="input-group-addon" style="padding-right:36px;">File song</span>
-                        <input type="file" class="form-control" name="urlsong" placeholder="File song..." required="required">				
+                        <span class="input-group-addon" style="padding-right:36px;">File song<span class="require-field-red">*</span></span>
+                        <input type="file" class="form-control" name="urlsong" placeholder="File song..." required>				
                     </div>
                 </div>
                 <div class="form-group">

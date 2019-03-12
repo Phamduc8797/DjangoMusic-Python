@@ -35,7 +35,6 @@
                             <p><strong><a href="{{ song.get_absolute_url }}"><span class="glyphicon glyphicon-music"></span> {{ song.name }}</a></strong></p>
                             <p>Singer: {{ song.singer.name }}</p>
                             <p>Category: {{ song.category.name }}</p>
-                            <p><a href="{% url 'delete-song' song.id  %}">delete</a></p>
                             <button class="btn" data-toggle="modal" data-target="#playsong{{ song.id }}">Play</button>
                         </div>
                     </div>

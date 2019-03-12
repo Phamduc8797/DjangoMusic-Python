@@ -26,8 +26,8 @@
             <form action="{% url 'dashboards:edit-lyric' object.id %}" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="comment">Content:</label>
-                    <textarea class="form-control" rows="5" name="content" style="min-height:500px">{{ object.content }}</textarea>
+                    <label for="comment">Content<span class="require-field-red">*</span> :</label>
+                    <textarea class="form-control" rows="5" name="content" style="min-height:500px" required>{{ object.content }}</textarea>
                 </div>
                 <button class="btn btn-secondary" type="submit">Change</button>
             </form>

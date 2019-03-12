@@ -11,7 +11,8 @@ from .forms import (
     UploadSongForm, 
     CreateLyricForm, 
     CreateCommentForm, 
-    CreateSingerForm
+    CreateSingerForm,
+    AdminCreateCategoryForm,
 )
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -130,11 +131,25 @@ class CreateSingerView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def get_success_url(self): 
         return reverse('dashboards:list-singers', kwargs={})
 
+class AdminCreateCategoryView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    login_url = '/login/'
+    template_name = 'admin/categories/create_category.html'
+    form_class = AdminCreateCategoryForm
+    success_message = 'Category has been created.'
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        return super(AdminCreateCategoryView, self).form_valid(form)
+    
+    def get_success_url(self): 
+        return reverse('dashboards:list-categories', kwargs={})
+
 class DeleteLyricView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     login_url = '/login/'
     model = Lyric
     success_message = 'Delete the lyric successfully.'
-    template_name = 'admin/confirms/lyric_confirm_delete.html'
+    template_name = 'admin/confirms/confirm_delete.html'
 
     def get_success_url(self): 
         return reverse('dashboards:list-lyrics', kwargs={})
@@ -143,25 +158,52 @@ class AdminDeleteSingerView(LoginRequiredMixin, SuccessMessageMixin, DeleteView)
     login_url = '/login/'
     model = Singer
     success_message = 'Delete the singer successfully.'
-    template_name = 'admin/confirms/singer_confirm_delete.html'
+    template_name = 'admin/confirms/confirm_delete.html'
 
     def get_success_url(self): 
         return reverse('dashboards:list-singers', kwargs={})
 
-class DeleteSongView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class AdminDeleteCategoryView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    login_url = '/login/'
+    model = Category
+    success_message = 'Delete the category successfully.'
+    template_name = 'admin/confirms/confirm_delete.html'
+
+    def get_success_url(self): 
+        return reverse('dashboards:list-categories', kwargs={})
+
+class AdminDeleteContactView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    login_url = '/login/'
+    model = Contact
+    success_message = 'Delete the contact successfully.'
+    template_name = 'admin/confirms/confirm_delete.html'
+
+    def get_success_url(self): 
+        return reverse('dashboards:list-contacts', kwargs={})
+
+class AdminDeleteCommentView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    login_url = '/login/'
+    model = Comment
+    success_message = 'Delete the comment successfully.'
+    template_name = 'admin/confirms/confirm_delete.html'
+
+    def get_success_url(self): 
+        return reverse('dashboards:list-comments', kwargs={})
+
+class AdminDeleteSongView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     login_url = '/login/'
     model = Song
     success_message = 'Delete the song successfully.'
-    template_name = 'admin/confirms/song_confirm_delete.html'
+    template_name = 'admin/confirms/confirm_delete.html'
 
     def get_success_url(self): 
-        return reverse('list-songs', kwargs={})
+        return reverse('dashboards:list-song', kwargs={})
 
 class DeleteCommentView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     login_url = '/login/'
     model = Comment
     success_message = 'Delete the comment successfully.'
-    template_name = 'admin/confirms/comment_confirm_delete.html'
+    template_name = 'admin/confirms/confirm_delete.html'
 
     def get_success_url(self): 
         return reverse('detail-song', kwargs={'pk': 1})
@@ -185,3 +227,29 @@ class AdminUpdateSingerView(LoginRequiredMixin, SuccessMessageMixin, UpdateView)
 
     def get_success_url(self): 
         return reverse('dashboards:list-singers', kwargs={})
+
+class AdminUpdateCategoryView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    login_url = '/login/'
+    model = Category
+    template_name = 'admin/categories/edit_category.html'
+    success_message = 'Update the category successfully.'
+    fields = ['photo', 'name', 'description',]
+
+    def get_success_url(self): 
+        return reverse('dashboards:list-categories', kwargs={})
+
+class AdminUpdateSongView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    login_url = '/login/'
+    model = Song
+    template_name = 'admin/songs/edit_song.html'
+    success_message = 'Update the song successfully.'
+    fields = ['photo', 'name', 'description', 'urlsong', 'singer', 'category']
+
+    def get_success_url(self): 
+        return reverse('dashboards:list-song', kwargs={})
+
+    def get_context_data(self, **kwargs):
+        context = super(AdminUpdateSongView, self).get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['singers'] = Singer.objects.all()
+        return context

@@ -5,7 +5,7 @@
     Create Singer | {{ block.super }}
 {% endblock titleadmin %}
 {% block contentadmin %}
-    <!-- Breadcrumbs-->
+    <!-- Breadcrumbs-->    
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="{% url 'dashboards:dashboard' %}">Dashboard</a>
@@ -25,9 +25,9 @@
         <div class="table-responsive">
             <form action="{% url 'dashboards:create-singer' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="comment">Name:</label>
-                    <input type="text" class="form-control" rows="5" name="name">
+                <div class="form-group">                    
+                    <label for="comment">Name<span class="require-field-red">*</span> :</label>
+                    <input type="text" class="form-control" rows="5" name="name" required>
                 </div>
                 <div class="form-group">
                     <label for="comment">Photo:</label> <br>

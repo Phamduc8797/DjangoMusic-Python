@@ -4,19 +4,7 @@
 {% block titleadmin %}
     Lyrics | {{ block.super }}
 {% endblock titleadmin %}
-{% block contentadmin %} 
-    {% if form.errors %}
-        <div class="alert alert-danger">
-            <strong>Wrong something!!</strong>
-        </div>
-    {% endif %}
-    {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-success">
-            <strong>{{ message }}</strong>
-        </div>
-        {% endfor %}
-    {% endif %}
+{% block contentadmin %}
 
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
@@ -103,14 +91,6 @@
                             </div>
                             </div>
                         </div>
-                        <script>
-                                function stopsongdetail(){                                    
-                                    $.each($('.playsongdetail'), function () {
-                                        this.pause();
-                                        this.currentTime = 0;
-                                    });
-                                };
-                            </script>
                     {% endfor %}
                     
                 </tbody>

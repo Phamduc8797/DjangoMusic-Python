@@ -25,7 +25,10 @@
                     <tr>
                         <th>Avt</th>
                         <th>Name</th>
+                        <th>Singer</th>
+                        <th>Category</th>
                         <th>Listening</th>
+                        <th>Likes</th>
                         <th>Timestamp</th>
                         <th>Updated</th>
                         <th>Action</th>
@@ -36,7 +39,10 @@
                         <tr>
                             <td><img src="/{{ song.photo }}" alt="" style="width:50px"></td>
                             <td>{{ song.name }}</td>
+                            <td>{{ song.singer }}</td>
+                            <td>{{ song.category }}</td>
                             <td>{{ song.listening }}</td>
+                            <td>N/A</td>
                             <td>{{ song.timestamp|naturaltime }}</td>
                             <td>{{ song.updated|naturaltime }}</td>
                             <td>
@@ -46,14 +52,87 @@
                                             <i class="fas fa-grip-horizontal fa-fw"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                            <a class="dropdown-item" href="#">Detail</a>
-                                            <a class="dropdown-item" href="#">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#detailsong{{ song.id }}">Detail</a>
+                                            <a class="dropdown-item" href="{% url 'dashboards:edit-song' song.id %}">Edit</a>
+                                            <a class="dropdown-item" href="{% url 'dashboards:delete-song' song.id %}">Delete</a>
                                         </div>
                                     </li>
                                 </ul>
                         </td>
                         </tr>
+                        <div class="modal fade" id="detailsong{{ song.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Detail</h5>
+                                    <div class="close">
+                                        <span><i class="fas fa-music"></i> {{ song.name }}</span>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <audio src="/{{ song.urlsong }}" controls style="width:100%" class="playsongdetail"></audio>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-4"><strong><i class="fas fa-fw fa-user-astronaut"></i>Singer:</strong></div>
+                                        <div class="col-sm-6">{{ song.singer }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"><strong><i class="fas fa-fw fa-list"></i>Category:</strong></div>
+                                        <div class="col-sm-6">{{ song.category }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"><strong><i class="fas fa-fw fa-user"></i>Creator:</strong></div>
+                                        <div class="col-sm-6">{{ song.user }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"><strong><i class="fas fa-fw fa-headphones"></i>Listening:</strong></div>
+                                        <div class="col-sm-6">
+                                            <span class="badge badge-secondary" style="height:18px;">
+                                                {{ song.listening }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"><strong><i class="fas fa-fw fa-thumbs-up"></i>Likes:</strong></div>
+                                        <div class="col-sm-6">N/A</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"><strong><i class="fas fa-fw fa-clipboard-list"></i>Lyrics:</strong></div>
+                                        <div class="col-sm-7">                                         
+                                            <div class="row">
+                                                <div class="col-sm-6"><strong>Accepted</strong></div> 
+                                                <div class="col-sm-1">
+                                                    <span class="badge badge-secondary" style="height:18px;">
+                                                        {{ song.get_lyric_accept.count }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6"><strong>No Accept</strong></div> 
+                                                <div class="col-sm-1">
+                                                    <span class="badge badge-secondary" style="height:18px;">
+                                                        {{ song.get_lyric_no_accept.count }}
+                                                    </span>
+                                                </div>
+                                            </div>                                      
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"><strong><i class="fas fa-fw fa-comments"></i>Comments:</strong></div>
+                                        <div class="col-sm-6"> 
+                                            <span class="badge badge-secondary" style="height:18px;">
+                                                {{ song.song_comments.count }}
+                                            </span>                                      
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal" onclick="stopsongdetail();">Cancel</button>
+                                    <a class="btn btn-primary" target="_blank" href="{% url 'detail-song' song.id %}">Got to "{{ song.name }}" Page</a>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                     {% endfor %}
                 </tbody>
             </table>

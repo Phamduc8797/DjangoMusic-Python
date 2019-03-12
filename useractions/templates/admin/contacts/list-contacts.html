@@ -46,14 +46,28 @@
                                             <i class="fas fa-grip-horizontal fa-fw"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                            <a class="dropdown-item" href="#">Detail</a>
-                                            <a class="dropdown-item" href="#">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#detailcontact{{ contact.id }}">Detail Content</a>
+                                            <a class="dropdown-item" href="{% url 'dashboards:delete-contact' contact.id %}">Delete</a>
                                         </div>
                                     </li>
                                 </ul>
                         </td>
                         </tr>
+                        <div class="modal fade" id="detailcontact{{ contact.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Content:</h5>
+                                </div>
+                                <div class="modal-body">
+                                    {{ contact.content|linebreaks }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                     {% endfor %}
                 </tbody>
             </table>

@@ -108,7 +108,8 @@ class DashboardCategoryView(View):
     def get(self, request, *args, **kwargs):
         template_name = 'admin/categories/list-categories.html'
         obj = {
-            'categories': Category.objects.all(),
+            'categories': Category.objects.all().order_by('-updated'),
+            'songs': Song.objects.all(),
         }
         return render(request, template_name, obj)
 
