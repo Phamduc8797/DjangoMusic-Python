@@ -51,6 +51,9 @@ urlpatterns = [
     url(r'^create-comment/(?P<pk>[-\w]+)$', CreateCommentView.as_view(), name='create-comment'),
 
     url(r'^delete-comment/(?P<pk>[-\w]+)$', DeleteCommentView.as_view(), name='delete-comment'),
+    
+    url(r'^like-song/(?P<pk>[-\w]+)$', views.like_song, name='like-song'),
+    url(r'^dislike-song/(?P<pk>[-\w]+)$', views.dislike_song, name='dislike-song'),
 
     url(r'^dashboard/', include('useractions.urls', namespace='dashboards')),
 ]

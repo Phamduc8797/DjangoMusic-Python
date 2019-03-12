@@ -10,7 +10,7 @@ from django.db.models import F
 from django.core.urlresolvers import reverse
 
 from .models import Singer, Song, Category
-from useractions.models import Lyric, Comment, Contact
+from useractions.models import Lyric, Comment, Contact, Like
 
 after_logout = settings.LOGOUT_REDIRECT_URL
 
@@ -49,9 +49,11 @@ class DetailSongView(DetailView):
         context = super(DetailSongView, self).get_context_data(**kwargs)
         # get_song_id = Song.objects.get(pk=self.kwargs.get('pk')).id
         get_song_id = self.kwargs.get('pk')
+        user = self.request.user
         Song.objects.filter(id=get_song_id).update(listening=F('listening') + 1)
         # print(self.kwargs.get('pk'))
         # print(self.request.user)
+        context['liked'] = Like.objects.filter(user=user,song=get_song_id)
         context['lyrics'] = Lyric.objects.filter(song=get_song_id, accept=True)[1:]
         context['lyricfirst'] = Lyric.objects.filter(song=get_song_id, accept=True).first()
         context['comments'] = Comment.objects.filter(song=get_song_id).order_by('-updated')[0:5] 
@@ -128,3 +130,17 @@ def accept_lyric(request, pk):
 def ignore_lyric(request, pk):
     Lyric.objects.filter(id=pk).update(accept=False)
     return redirect('dashboards:list-lyrics')
+
+def like_song(request, pk):
+    user = request.user
+    song = Song.objects.get(id=pk)
+    like = Like(user=user, song=song)
+    like.save()
+    return redirect('detail-song', pk=pk)
+
+def dislike_song(request, pk):
+    user = request.user
+    song = Song.objects.get(id=pk)
+    like = Like.objects.filter(user=user, song=song)
+    like.delete()
+    return redirect('detail-song', pk=pk)
