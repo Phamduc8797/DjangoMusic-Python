@@ -28,7 +28,15 @@
     </head>
     <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
         {% include 'homes/sidebar.html' %}
-        <!-- Container  --> 
+        <!-- Container  -->
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-success messhome">
+                    <strong>{{ message }}</strong>
+                </div>
+                {% endfor %}
+            {% endif %} 
+
             {% block content %}
             {% endblock content %}
         <!-- End container -->

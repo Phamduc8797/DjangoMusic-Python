@@ -12,11 +12,16 @@
             <ul class="nav navbar-nav navbar-right">     
                 <li><a href="{% url 'home' %}" {% if request.path == "/" %}style="color:white"{% endif %}>HOME</a></li>
                 <li><a href="{% url 'list-singer' %}" {% if request.path == "/list-singer/" %}style="color:white"{% endif %}>SINGERS</a></li>
-                <li><a href="{% url 'list-songs' %}" {% if request.path == "/list-songs/" %}style="color:white"{% endif %}>SONGS</a></li>
-                <li><a href="{% url 'contactview' %}" {% if request.path == "/contact/" %}style="color:white"{% endif %}>CONTACT</a></li>
-                <li><a href="{% url 'upload-song' %}" {% if request.path == "/upload-song/" %}style="color:white"{% endif %}>UPLOAD</a></li>
+                <li><a href="{% url 'list-songs' %}" {% if request.path == "/list-songs/" %}style="color:white"{% endif %}>SONGS</a></li>                
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}">SIGN OUT</a></li>
+                    <li><a href="{% url 'contactview' %}" {% if request.path == "/contact/" %}style="color:white"{% endif %}>CONTACT</a></li>
+                    <li><a href="{% url 'upload-song' %}" {% if request.path == "/upload-song/" %}style="color:white"{% endif %}>UPLOAD</a></li>
+                    <li><a href="{% url 'logout' %}" id="confirmsignout">SIGN OUT</a></li>
+                    <script>
+                        $('#confirmsignout').click(function(){
+                            return confirm('Are you sure you want to Sign out?');
+                        });
+                    </script>
                     <li><a href="">HI! {{ user.username.upper }}</a></li>
                     {% if user.is_superuser %}
                         <li><a href="{% url 'dashboards:dashboard' %}">DASHBOARDS</a></li>

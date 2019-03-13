@@ -5,7 +5,7 @@ from musics.models import Singer, Song, Category
 class ContactCreateForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ['name', 'email', 'content',]
+        fields = ['content',]
 
 class UploadSongForm(forms.ModelForm):
     class Meta:

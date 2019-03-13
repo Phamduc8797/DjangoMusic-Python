@@ -31,31 +31,12 @@ class ContactCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = ContactCreateForm
     success_message = 'Send contact successfully!'
 
-    # def get_success_message(self, cleaned_data):
-    #     return self.success_message % dict(
-    #         cleaned_data,
-    #     )
-    
-    # def get_form_kwargs(self):
-    #     kwargs = super(ContactCreateView, self).get_form_kwargs()
-    #     # kwargs['user'] = self.request.user
-    #     # kwargs['instance'] = Item.objects.filter(user=self.request.user).first()
-    #     print(kwargs)
-    #     return kwargs
 
-    # def get_queryset(self):
-    #     return Contact.objects.all()
-
-    # def form_valid(self, form):
-    #     obj = form.save(commit=False)
-    #     # obj.user = self.request.user
-    #     return super(ContactCreateView, self).form_valid(form)
-
-    # def get_context_data(self,*args, **kwargs):
-    #     context = super(ContactCreateView, self).get_context_data(*args, **kwargs)
-    #     context['mess'] = 'Create Contact'
-    #     print(context)
-    #     return context
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.name = self.request.user.username
+        obj.email = self.request.user.email
+        return super(ContactCreateView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
         template_name = 'contacts/contact.html'
@@ -71,47 +52,41 @@ class UploadSongView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = UploadSongForm
     success_message = 'Upload song successfully!'
 
-    # def get_form_kwargs(self):
-    #     kwargs = super(UploadSongView, self).get_form_kwargs()
-    #     print(kwargs)
-    #     return kwargs
-
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.user = self.request.user
         return super(UploadSongView, self).form_valid(form)
 
-    def get(self, request, *args, **kwargs):
-        template_name = 'songs/upload-song.html'
-        obj = {
-            'singers': Singer.objects.all(),
-            'categories': Category.objects.all()
-        }        
-        return render(request, template_name, obj)
+    def get_context_data(self, **kwargs):
+        context = super(UploadSongView, self).get_context_data(**kwargs)
+        context['singers'] = Singer.objects.all()
+        context['categories'] = Category.objects.all()
+        return context
 
 class CreateLyricView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     login_url = '/login/'
     template_name = 'songs/song_detail.html'
     form_class = CreateLyricForm
-    success_message = 'Contribute lyric successfully!. Pls waiting admin approved.'
 
     def form_valid(self, form):
+        data = dict()
         get_song_id = Song.objects.get(pk=self.kwargs.get('pk'))
         obj = form.save(commit=False)
         obj.user = self.request.user
         obj.song = get_song_id
+        if form.is_valid():
+            if self.request.is_ajax():
+                form.save()
+                return HttpResponse( json.dumps(data), 'application/json' )
         return super(CreateLyricView, self).form_valid(form)
-    
-    def get_success_url(self): 
-        return reverse('detail-song', kwargs={'pk': self.kwargs.get('pk')})
 
 class CreateCommentView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     login_url = '/login/'
     template_name = 'songs/song_detail.html'
     form_class = CreateCommentForm
-    success_message = 'You have successfully commented.'
 
     def form_valid(self, form):
+        data = dict()
         get_song_id = self.kwargs.get('pk')
         get_song = Song.objects.get(pk=get_song_id)
         obj = form.save(commit=False)
@@ -122,12 +97,11 @@ class CreateCommentView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
                 form.save()
                 user = self.request.user
                 listcomments = Comment.objects.filter(song=get_song).order_by('-updated')
-                html = render_to_string( 'songs/comments.html', { 'comments': listcomments, 'current_user': user, 'object': get_song_id} )
-                return HttpResponse( json.dumps(html), 'application/json' )
-        else:
-            return super(CreateCommentView, self).form_valid(form)        
-    
-
+                data['html'] = render_to_string( 'songs/comments.html', { 'comments': listcomments, 'current_user': user, 'object': get_song_id} )
+                return HttpResponse( json.dumps(data), 'application/json' )
+            else:
+                return super(CreateCommentView, self).form_valid(form)
+        return super(CreateCommentView, self).form_valid(form) 
 
 class CreateSingerView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     login_url = '/login/'

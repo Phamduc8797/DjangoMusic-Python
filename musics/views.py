@@ -49,7 +49,8 @@ class ListSongView(ListView):
         }
         return render(request, template_name, obj)
 
-class DetailSongView(DetailView):
+class DetailSongView(LoginRequiredMixin, DetailView):
+    login_url = '/login/'
     model = Song
     template_name = 'songs/song_detail.html'
 

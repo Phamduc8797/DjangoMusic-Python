@@ -5,6 +5,7 @@ from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.encoding import smart_unicode
+from django.core.validators import FileExtensionValidator
 
 User = settings.AUTH_USER_MODEL
 
@@ -55,7 +56,7 @@ class Singer(models.Model):
 class Song(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_songs')
     photo = models.ImageField(upload_to='static/images/uploads', blank=True, default="static/images/default.png")
-    urlsong = models.FileField(upload_to='static/medias/uploads')
+    urlsong = models.FileField(upload_to='static/medias/uploads', validators=[FileExtensionValidator(allowed_extensions=['mp3'])])
     listening = models.IntegerField(default=0)
     name = models.CharField(max_length=255, null=False, blank=False)
     singer = models.ForeignKey(Singer, on_delete=models.CASCADE, related_name='sing_songs')
