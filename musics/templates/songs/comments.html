@@ -15,14 +15,30 @@
                 <div class="panel-body">
                     {{ comment.content|linebreaks }}
                     {% if comment.user == current_user %}
-                        <i onclick="deletecomment();" style="float:right;" data-song-id="{{ object }}" data-comment-id="{{ comment.id }}" class="glyphicon glyphicon-trash cpointer deletecomment"></i>
-                        <a style="float:right;" href="" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                        <i style="float:right;" data-song-id="{{ object }}" data-comment-id="{{ comment.id }}" class="glyphicon glyphicon-trash cpointer deletecomment{{ comment.id }}"></i>
+                        <i style="float:right;" data-song-id="{{ object }}" data-comment-id="{{ comment.id }}" class="glyphicon glyphicon-edit cpointer mg-r-5 editcomment{{ comment.id }}"></i>
                     {% endif %}
                 </div><!-- /panel-body -->
                         
             </div><!-- /panel panel-default -->
         </div><!-- /col-sm-5 -->
-    </div><!-- /row -->                
+    </div><!-- /row -->
+    <script>
+        $('.deletecomment{{ comment.id }}').click(function(){
+            var song_id = $(this).data("song-id");
+            var comment_id = $(this).data('comment-id');
+            // alert('song:' + song_id + ', '+'comment '+comment_id);
+            if (confirm('Are you sure you want to delete this?')) {                           
+                $.ajax({
+                    url: '/detail-song/'+ song_id +'/delete-comment/'+ comment_id,
+                    success: function (data) {
+                        $('.div-comment').html(data);
+                    }
+                });
+            };
+            
+        });
+    </script>             
 {% endfor %}
 {% else %}
 No comment.

@@ -5,7 +5,7 @@
     {{ object.name }} | {{ block.super }}
 {% endblock title %}
 {% block content %}
-<div class="container">
+<div class="container asdadasdasd">
     <div class="row">
         {% if form.errors %}
             <div class="alert alert-danger">
@@ -23,7 +23,7 @@
     <div class="row" style="background-color:#DDDDDD;border-radius: 20px;">
         <div class="col-md-4">
             <img src="/{{ object.photo }}"
-            alt="" class="img-rounded img-responsive" />
+            alt="" class="img-responsive-detail" />
         </div>
         <div class="col-md-8">
             <blockquote>
@@ -74,7 +74,7 @@
             };
         
         </script>
-        <!-- <audio src="/{{ object.urlsong }}" controls style="width:100%" id="controllsong" controlsList="nodownload" autoplay></audio> -->
+        <audio src="/{{ object.urlsong }}" controls style="width:100%" id="controllsong" controlsList="nodownload" autoplay></audio>
     </div>
     <div class="row">
         <div class="col-md-6 col-md-offset-4">
@@ -141,12 +141,33 @@
         <div class="col-sm-12">  
             <h2>Comment <span style="font-size:14px;color:#337ab7;cursor: pointer;" data-toggle="collapse" data-target="#newcomment">New comment</span></h2>
             <div id="newcomment" class="collapse">                 
-                <form action="{% url 'create-comment' object.id %}" method="POST">
+                <form id="formaddcomment" action="{% url 'create-comment' object.id %}" method="POST">
                     {% csrf_token %}
-                    <textarea class="form-control" id="content" name="content" placeholder="Content" rows="5" required></textarea>
-                    <button class="btn pull-right" type="submit">Add</button>
+                    <span id="clearcomment">
+                        <textarea class="form-control contentcomment" id="content" name="content" placeholder="Content" rows="5" required></textarea>
+                    </span>
+                    <button class="btn pull-right submitaddcomment" data-song-id="{{ object.id }}" type="button" onclick="submitaddcomment();">Add</button>
                 </form>                   
-            </div>                
+            </div>
+            <script>
+                function submitaddcomment(){
+                    var frm = $('#formaddcomment');
+                    var contentcomment = $('.contentcomment');
+                    if (contentcomment.val() == ""){
+                        alert("Content cannot be left blank when add new comment!");
+                    }else{
+                        $.ajax({
+                            type: frm.attr('method'),
+                            url: frm.attr('action'),
+                            data: frm.serialize(),
+                            success: function (data) {
+                                $('#clearcomment').html('<textarea class="form-control contentcomment" id="content" name="content" placeholder="Content" rows="5" required></textarea>');
+                                $('.div-comment').html(data);                            
+                            }
+                        });
+                    }            
+                }
+            </script>              
         </div><!-- /col-sm-12 -->
     </div>
     <div class="div-comment">
@@ -166,32 +187,34 @@
                             <div class="panel-body">
                                 {{ comment.content|linebreaks }}
                                 {% if comment.user == request.user %}
-                                    <i onclick="deletecomment();" style="float:right;" data-song-id="{{ object.id }}" data-comment-id="{{ comment.id }}" class="glyphicon glyphicon-trash cpointer deletecomment"></i>
-                                    <a style="float:right;" href="" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <i style="float:right;" data-song-id="{{ object.id }}" data-comment-id="{{ comment.id }}" class="glyphicon glyphicon-trash cpointer deletecomment{{ comment.id }}"></i>
+                                    <i style="float:right;" data-song-id="{{ object.id }}" data-comment-id="{{ comment.id }}" class="glyphicon glyphicon-edit cpointer mg-r-5 editcomment{{ comment.id }}"></i>
                                 {% endif %}
                             </div><!-- /panel-body -->
                                     
                         </div><!-- /panel panel-default -->
                     </div><!-- /col-sm-5 -->
-                </div><!-- /row -->                
+                </div><!-- /row -->
+                <script>
+                    $('.deletecomment{{ comment.id }}').click(function(){
+                        var song_id = $(this).data("song-id");
+                        var comment_id = $(this).data('comment-id');
+                        // alert('song:' + song_id + ', '+'comment '+comment_id);
+                        if (confirm('Are you sure you want to delete this?')) {                           
+                            $.ajax({
+                                url: '/detail-song/'+ song_id +'/delete-comment/'+ comment_id,
+                                success: function (data) {
+                                    $('.div-comment').html(data);
+                                }
+                            });
+                        };
+                        
+                    });
+                </script>              
             {% endfor %}
         {% else %}
             No comment.
         {% endif %}        
-    </div>
-    <script>
-        function deletecomment(){
-            if (confirm('Are you sure you want to delete this?')) {                             
-                var song_id = $('.deletecomment').data("song-id");
-                var comment_id = $('.deletecomment').data("comment-id");
-                $.ajax({
-                    url: '/detail-song/'+ song_id +'/delete-comment/'+ comment_id +'',
-                    success: function (data) {
-                        $('.div-comment').html(data);
-                    }
-                });
-            };
-        };
-    </script>
+    </div>    
 </div>
 {% endblock content %}

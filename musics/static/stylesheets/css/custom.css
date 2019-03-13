@@ -8,3 +8,14 @@
     cursor: pointer;
     color: #337ab7;
 }
+.img-responsive-detail{
+    display: block;
+    max-width: 100%;
+    border-radius: 20px 0 0 20px;
+    min-width: 305px;
+    height: 256px;
+    margin-top: 16px;
+}
+.mg-r-5{
+    margin-right: 5px;
+}
