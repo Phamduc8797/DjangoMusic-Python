@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
+
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, DeleteView, UpdateView
@@ -17,6 +19,9 @@ from .forms import (
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from musics.views import DetailSongView
+
+from django.template.loader import render_to_string
+from django.http import JsonResponse, HttpResponse
 
 from django.core.mail import EmailMessage
 
@@ -107,14 +112,22 @@ class CreateCommentView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_message = 'You have successfully commented.'
 
     def form_valid(self, form):
-        get_song_id = Song.objects.get(pk=self.kwargs.get('pk'))
+        get_song_id = self.kwargs.get('pk')
+        get_song = Song.objects.get(pk=get_song_id)
         obj = form.save(commit=False)
         obj.user = self.request.user
-        obj.song = get_song_id
-        return super(CreateCommentView, self).form_valid(form)
+        obj.song = get_song
+        if form.is_valid():
+            if self.request.is_ajax():
+                form.save()
+                user = self.request.user
+                listcomments = Comment.objects.filter(song=get_song).order_by('-updated')
+                html = render_to_string( 'songs/comments.html', { 'comments': listcomments, 'current_user': user, 'object': get_song_id} )
+                return HttpResponse( json.dumps(html), 'application/json' )
+        else:
+            return super(CreateCommentView, self).form_valid(form)        
     
-    def get_success_url(self): 
-        return reverse('detail-song', kwargs={'pk': self.kwargs.get('pk')})
+
 
 class CreateSingerView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     login_url = '/login/'

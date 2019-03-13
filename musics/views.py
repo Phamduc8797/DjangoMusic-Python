@@ -16,6 +16,7 @@ from django.core.mail import EmailMessage
 
 from .models import Singer, Song, Category
 from useractions.models import Lyric, Comment, Contact, Like
+from django.contrib.auth.models import User
 
 from django.template.loader import render_to_string
 
@@ -63,7 +64,7 @@ class DetailSongView(DetailView):
         context['liked'] = Like.objects.filter(user=user,song=get_song_id)
         context['lyrics'] = Lyric.objects.filter(song=get_song_id, accept=True)[1:]
         context['lyricfirst'] = Lyric.objects.filter(song=get_song_id, accept=True).first()
-        context['comments'] = Comment.objects.filter(song=get_song_id).order_by('-updated')[0:5] 
+        context['comments'] = Comment.objects.filter(song=get_song_id).order_by('-updated')
         context['lyrictotal'] = Lyric.objects.filter(song=get_song_id, accept=True)
         return context
 
@@ -135,7 +136,7 @@ def accept_lyric(request, pk):
     lyr = Lyric.objects.get(id=pk)
     sog = lyr.song.name
     to_mail = lyr.user.email
-    email = EmailMessage('[DjangoMusic] Accepted Lyric', 'Your '+sog+' lyrics have been approved.', to=[to_mail])
+    email = EmailMessage('[DjangoMusic] Accepted Lyric', 'Your '+sog+' lyrics has been approved.', to=[to_mail])
     email.send()
     return redirect('dashboards:list-lyrics')
 
@@ -144,7 +145,7 @@ def ignore_lyric(request, pk):
     lyr = Lyric.objects.get(id=pk)
     sog = lyr.song.name
     to_mail = lyr.user.email
-    email = EmailMessage('[DjangoMusic] Canceled Lyric', 'Your '+sog+' lyrics have been canceled.', to=[to_mail])
+    email = EmailMessage('[DjangoMusic] Canceled Lyric', 'Your '+sog+' lyrics has been canceled.', to=[to_mail])
     email.send()
     return redirect('dashboards:list-lyrics')
 
@@ -169,7 +170,7 @@ def delete_comment(request, pk, comment_id):
     song = Song.objects.filter(id=pk)
     comment = Comment.objects.filter(id=comment_id, user=user)
     comment.delete()
-    listcomments = Comment.objects.filter(song=song)
+    listcomments = Comment.objects.filter(song=song).order_by('-updated')
     html = render_to_string( 'songs/comments.html', { 'comments': listcomments, 'current_user': user, 'object': pk} )
     return HttpResponse( json.dumps(html), 'application/json' )
     
