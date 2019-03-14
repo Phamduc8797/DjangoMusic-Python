@@ -33,10 +33,16 @@
                     url: '/detail-song/'+ song_id +'/delete-comment/'+ comment_id,
                     success: function (data) {
                         $('.div-comment').html(data);
+                        $('#erraddcomment').html("");
+                                    $('#successaddcomment').html('<div class="alert alert-success messhome"><strong>You have successfully deleted comment.</strong></div></br>');
                     }
                 });
             };
             
+        });
+
+        $('.editcomment{{ comment.id }}').click(function(){
+            alert('The edit function is being updated');
         });
     </script>             
 {% endfor %}

@@ -12,14 +12,6 @@
     <br><br>
     <div class="container" style="width:500px">
         <div class="col">
-            {% if form.errors %}
-                <div class="alert alert-danger">
-                    <strong>Wrong something!!</strong>
-                    {% for err in form.errors %}
-                    <strong>{{ err }}</strong>
-                    {% endfor %}
-                </div>
-            {% endif %}
             {% if messages %}
                 {% for message in messages %}
                 <div class="alert alert-success">
@@ -35,6 +27,7 @@
                         <span class="input-group-addon" style="padding-right:20px;">Name song<span class="require-field-red">*</span></span>
                         <input type="text" class="form-control" name="name" placeholder="Name song..." required>				
                     </div>
+                    <span class="require-field-red">{{form.errors.name}}</span>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
@@ -43,7 +36,7 @@
                             {% for singer in singers %}
                                 <option value="{{ singer.id }}">{{ singer.name }}</option>
                             {% endfor %}
-                        </select>			
+                        </select>		
                     </div>
                 </div>
                 <div class="form-group">
@@ -61,18 +54,21 @@
                         <span class="input-group-addon" style="padding-right:27px;">Description</span>
                         <input type="text" class="form-control" name="description" placeholder="Description...">				
                     </div>
+                    <span class="require-field-red">{{form.errors.description}}</span>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <span class="input-group-addon" style="padding-right:62px;">Photo</span>
                         <input type="file" class="form-control" name="photo">				
                     </div>
+                    <span class="require-field-red">{{form.errors.photo}}</span>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
-                        <span class="input-group-addon" style="padding-right:36px;">File song<span class="require-field-red">*</span></span>
+                        <span class="input-group-addon" style="padding-right:1px;">File song<span class="require-field-red">(mp3*)</span></span>
                         <input type="file" class="form-control" name="urlsong" placeholder="File song..." required>				
                     </div>
+                    <span class="require-field-red">{{form.errors.urlsong}}</span>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary login-btn btn-block">Upload</button>

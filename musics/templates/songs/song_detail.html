@@ -6,20 +6,6 @@
 {% endblock title %}
 {% block content %}
 <div class="container asdadasdasd">
-    <div class="row">
-        {% if form.errors %}
-            <div class="alert alert-danger">
-                <strong>Wrong something!!</strong>
-            </div>
-        {% endif %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-success">
-                <strong>{{ message }}</strong>
-            </div>
-            {% endfor %}
-        {% endif %}
-    </div>
     <div class="row" style="background-color:#DDDDDD;border-radius: 20px;">
         <div class="col-md-4">
             <img src="/{{ object.photo }}"
@@ -98,12 +84,44 @@
         <div class="col-sm-12">  
             <h2>Lyrics <span style="font-size:14px;color:#337ab7;cursor: pointer;" data-toggle="collapse" data-target="#demo">New lyric</span></h2>
             <div id="demo" class="collapse">                 
-                <form action="{% url 'create-lyric' object.id %}" method="POST">
+                <form id="formaddlyric" action="{% url 'create-lyric' object.id %}" method="POST">
                     {% csrf_token %}
-                    <textarea class="form-control" id="content" name="content" placeholder="Content" rows="5" required></textarea>
-                    <button class="btn pull-right" type="submit">Add</button>
+                    <span id="clearlyric">
+                        <textarea class="form-control contentlyric" id="content" name="content" placeholder="Content" rows="5" required></textarea>
+                    </span>
+                    <button class="btn pull-right" type="button" onclick="submitaddlyric();">Add</button>
                 </form>                   
             </div>
+            <span class="require-field-red" id="erraddlyric"></span>
+            <span id="successaddlyric"></span>
+            <script>
+                function submitaddlyric(){
+                    var frm = $('#formaddlyric');
+                    var contentlyric = $('.contentlyric');
+                    if (contentlyric.val() == ""){
+                        alert("Content cannot be left blank when add new lyric!");
+                    }else{
+                        $.ajax({
+                            type: frm.attr('method'),
+                            url: frm.attr('action'),
+                            data: frm.serialize(),
+                            success: function (data) {
+                                $('#clearlyric').html('<textarea class="form-control contentlyric" id="content" name="content" placeholder="Content" rows="5" required></textarea>');
+                                $('#erraddlyric').html('');
+                                $('#erraddcomment').html('');
+                                $('#successaddcomment').html('');
+                                $('#successaddlyric').html('<div class="alert alert-success messhome"><strong>Contribute lyric successfully!. Pls waiting admin approved.</strong></div></br>');                                                        
+                            },
+                            error: function() {
+                                $('#successaddlyric').html('');
+                                $('#erraddcomment').html('');
+                                $('#successaddcomment').html('');
+                                $('#erraddlyric').html('<div class="alert alert-danger messhome"><strong>Something Wrong! Pls try again!</strong></div></br>');
+                            }
+                        });
+                    }            
+                }
+            </script>
         </div><!-- /col-sm-12 -->
     </div>
     <div class="row">
@@ -147,8 +165,10 @@
                         <textarea class="form-control contentcomment" id="content" name="content" placeholder="Content" rows="5" required></textarea>
                     </span>
                     <button class="btn pull-right submitaddcomment" data-song-id="{{ object.id }}" type="button" onclick="submitaddcomment();">Add</button>
-                </form>                   
+                </form>                                      
             </div>
+            <span class="require-field-red" id="erraddcomment"></span>
+            <span id="successaddcomment"></span> 
             <script>
                 function submitaddcomment(){
                     var frm = $('#formaddcomment');
@@ -162,7 +182,17 @@
                             data: frm.serialize(),
                             success: function (data) {
                                 $('#clearcomment').html('<textarea class="form-control contentcomment" id="content" name="content" placeholder="Content" rows="5" required></textarea>');
-                                $('.div-comment').html(data);                            
+                                $('.div-comment').html(data.html);
+                                $('#erraddcomment').html("");
+                                $('#erraddlyric').html("");
+                                $('#successaddlyric').html("");
+                                $('#successaddcomment').html('<div class="alert alert-success messhome"><strong>You have successfully commented.</strong></div></br>');                                                        
+                            },
+                            error: function() {
+                                $('#erraddlyric').html("");
+                                $('#successaddlyric').html("");
+                                $('#successaddcomment').html('');
+                                $('#erraddcomment').html('<div class="alert alert-danger messhome"><strong>Content must be less than 250 characters.</strong></div></br>');
                             }
                         });
                     }            
@@ -205,10 +235,16 @@
                                 url: '/detail-song/'+ song_id +'/delete-comment/'+ comment_id,
                                 success: function (data) {
                                     $('.div-comment').html(data);
+                                    $('#erraddcomment').html("");
+                                    $('#successaddcomment').html('<div class="alert alert-success messhome"><strong>You have successfully deleted comment.</strong></div></br>');
                                 }
                             });
                         };
                         
+                    });
+
+                    $('.editcomment{{ comment.id }}').click(function(){
+                        alert('The edit function is being updated');
                     });
                 </script>              
             {% endfor %}
