@@ -76,3 +76,11 @@ class Song(models.Model):
 
     def get_lyric_no_accept(self):
         return self.song_lyrics.filter(accept=False)
+    
+    def get_description(self):
+        trunc = self.description
+        if trunc:
+            descp = trunc
+        else:
+            descp = "N/A"
+        return descp

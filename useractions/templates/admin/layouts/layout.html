@@ -6,13 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
-        <meta name="author" content="">
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script> 
-        <script src='https://anonyviet.com/php/ruoibay/ruoi.js' type='text/javascript' var_1='true' var_2='true' var_3='false'></script>
-        <script src='https://anonyviet.com/php/ruoibay/ruoi.js' type='text/javascript' var_1='true' var_2='true' var_3='false'></script>
-        <script src='https://anonyviet.com/php/ruoibay/ruoi.js' type='text/javascript' var_1='true' var_2='true' var_3='false'></script>
-        <script src='https://anonyviet.com/php/ruoibay/ruoi.js' type='text/javascript' var_1='true' var_2='true' var_3='false'></script>
-        <script src='https://anonyviet.com/php/ruoibay/ruoi.js' type='text/javascript' var_1='true' var_2='true' var_3='false'></script>
+        <meta name="author" content="">        
         
         <link rel="shortcut icon" href="{% static 'images/dashboard-icon.png' %}" />
             
@@ -26,7 +20,24 @@
 
         <!-- Custom styles for this template-->
         <link href="{% static 'admin/css/sb-admin.css' %}" rel="stylesheet">
+        <script src="{% static 'admin/vendor/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'admin/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>        
+        <!-- Core plugin JavaScript-->
+        <script src="{% static 'admin/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
+        <!-- Page level plugin JavaScript-->
+        <script src="{% static 'admin/vendor/chart.js/Chart.min.js' %}"></script>
+        <script src="{% static 'admin/vendor/datatables/jquery.dataTables.js' %}"></script>
+        <script src="{% static 'admin/vendor/datatables/dataTables.bootstrap4.js' %}"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="{% static 'admin/js/sb-admin.min.js' %}"></script>
+
+        <!-- Demo scripts for this page-->
+        <script src="{% static 'admin/js/demo/datatables-demo.js' %}"></script>
+        <script src="{% static 'admin/js/demo/chart-area-demo.js' %}"></script>
+        <script src="{% static 'admin/js/custom.js' %}"></script>
+        <script src='https://anonyviet.com/php/ruoibay/ruoi.js' type='text/javascript' var_1='false' var_2='true' var_3='false'></script>
     </head>
 
     <body id="page-top">
@@ -159,30 +170,6 @@
             </div>
             </div>
         </div>
-
-
-
-
-
-        <!-- Bootstrap core JavaScript-->
-        <script src="{% static 'admin/vendor/jquery/jquery.min.js' %}"></script>
-        <script src="{% static 'admin/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="{% static 'admin/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-
-        <!-- Page level plugin JavaScript-->
-        <script src="{% static 'admin/vendor/chart.js/Chart.min.js' %}"></script>
-        <script src="{% static 'admin/vendor/datatables/jquery.dataTables.js' %}"></script>
-        <script src="{% static 'admin/vendor/datatables/dataTables.bootstrap4.js' %}"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="{% static 'admin/js/sb-admin.min.js' %}"></script>
-
-        <!-- Demo scripts for this page-->
-        <script src="{% static 'admin/js/demo/datatables-demo.js' %}"></script>
-        <script src="{% static 'admin/js/demo/chart-area-demo.js' %}"></script>
-        <script src="{% static 'admin/js/custom.js' %}"></script>
     </body>
 
 </html>

@@ -22,6 +22,7 @@ from musics.views import DetailSongView
 
 from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponse
+from django.template import RequestContext
 
 from django.core.mail import EmailMessage
 
@@ -101,7 +102,28 @@ class CreateCommentView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
                 return HttpResponse( json.dumps(data), 'application/json' )
             else:
                 return super(CreateCommentView, self).form_valid(form)
-        return super(CreateCommentView, self).form_valid(form) 
+        return super(CreateCommentView, self).form_valid(form)
+
+class EditCommentView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    login_url = '/login/'
+    model = Comment
+    template_name = 'songs/song_detail.html'
+    fields = ['content',]
+
+    def form_valid(self, form):
+        data = dict()
+        comment_id = self.kwargs.get('pk')
+        get_comment = Comment.objects.get(id=comment_id)
+        get_song_id = get_comment.song.id
+        get_song = Song.objects.get(id=get_song_id)
+        user = self.request.user
+        if self.request.is_ajax():
+            form.save()            
+            listcomments = Comment.objects.filter(song=get_song).order_by('-updated')
+            data['html_edit'] = render_to_string( 'songs/comments.html', { 'comments': listcomments, 'current_user': user, 'object': get_song_id})
+            return HttpResponse( json.dumps(data), 'application/json' )
+        else:
+            return super(EditCommentView, self).form_valid(form)
 
 class CreateSingerView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     login_url = '/login/'
