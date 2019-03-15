@@ -14,9 +14,9 @@
         <div class="col-md-8">
             <blockquote>
                 <h2><span class="glyphicon glyphicon-music"></span> {{ object.name }}</h2>
-                <p>Singer: {{ object.singer }}</p>
-                <p>Category: {{ object.category }}</p>
-                <p>Description: {% if description %} {{ object.category }} {% else %} N/A {% endif %}</p>
+                <p><strong>Singer:</strong> {{ object.singer }}</p>
+                <p><strong>Category:</strong> {{ object.category }}</p>
+                <p><strong>Description:</strong> {% if object.description %} {{ object.get_description }} {% else %} N/A {% endif %}</p>
                 <br>
                 <div>
                     <span><i class="glyphicon glyphicon-headphones" title="Listening"></i> {{ object.listening }}</span>
@@ -167,8 +167,8 @@
                     <button class="btn pull-right submitaddcomment" data-song-id="{{ object.id }}" type="button" onclick="submitaddcomment();">Add</button>
                 </form>                                      
             </div>
-            <span class="require-field-red" id="erraddcomment"></span>
-            <span id="successaddcomment"></span> 
+            <span class="require-field-red" id="errmess"></span>
+            <span id="successmess"></span>
             <script>
                 function submitaddcomment(){
                     var frm = $('#formaddcomment');
@@ -183,16 +183,12 @@
                             success: function (data) {
                                 $('#clearcomment').html('<textarea class="form-control contentcomment" id="content" name="content" placeholder="Content" rows="5" required></textarea>');
                                 $('.div-comment').html(data.html);
-                                $('#erraddcomment').html("");
-                                $('#erraddlyric').html("");
-                                $('#successaddlyric').html("");
-                                $('#successaddcomment').html('<div class="alert alert-success messhome"><strong>You have successfully commented.</strong></div></br>');                                                        
+                                $('#errmess').html("");
+                                $('#successmess').html('<div class="alert alert-success messhome"><strong>You have successfully commented.</strong></div></br>');                                                        
                             },
                             error: function() {
-                                $('#erraddlyric').html("");
-                                $('#successaddlyric').html("");
-                                $('#successaddcomment').html('');
-                                $('#erraddcomment').html('<div class="alert alert-danger messhome"><strong>Content must be less than 250 characters.</strong></div></br>');
+                                $('#successmess').html("");
+                                $('#errmess').html('<div class="alert alert-danger messhome"><strong>Content must be less than 250 characters.</strong></div></br>');
                             }
                         });
                     }            
@@ -218,11 +214,14 @@
                                 {{ comment.content|linebreaks }}
                                 {% if comment.user == request.user %}
                                     <i style="float:right;" data-song-id="{{ object.id }}" data-comment-id="{{ comment.id }}" class="glyphicon glyphicon-trash cpointer deletecomment{{ comment.id }}"></i>
-                                    <i style="float:right;" data-song-id="{{ object.id }}" data-comment-id="{{ comment.id }}" class="glyphicon glyphicon-edit cpointer mg-r-5 editcomment{{ comment.id }}"></i>
+                                    <i data-toggle="collapse" data-target="#editcomment{{ comment.id }}" style="float:right;" data-song-id="{{ object.id }}" data-comment-id="{{ comment.id }}" class="glyphicon glyphicon-edit cpointer mg-r-5"></i>
                                 {% endif %}
                             </div><!-- /panel-body -->
-                                    
+                            <div id="editcomment{{ comment.id }}" class="collapse">
+                                {% include 'songs/form_edit_comment.html' with comment=comment csrf_token=csrf_token %}
+                            </div>                                                
                         </div><!-- /panel panel-default -->
+                        
                     </div><!-- /col-sm-5 -->
                 </div><!-- /row -->
                 <script>
@@ -242,15 +241,11 @@
                         };
                         
                     });
-
-                    $('.editcomment{{ comment.id }}').click(function(){
-                        alert('The edit function is being updated');
-                    });
-                </script>              
+                </script>                          
             {% endfor %}
         {% else %}
             No comment.
-        {% endif %}        
+        {% endif %}
     </div>    
 </div>
 {% endblock content %}

@@ -15,7 +15,7 @@ class Like(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return self.user
+        return self.user.username
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comments')

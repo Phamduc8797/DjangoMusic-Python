@@ -1,0 +1,62 @@
+<form class="formeditcomment{{ comment.id }}" action="{% url 'edit-comment' comment.id %}" method="POST">
+    <span class="cleareditcomment{{ comment.id }}">
+        <textarea class="form-control contentcomment{{ comment.id }}" name="content" placeholder="Content" rows="5" required>{{comment.content}}</textarea>
+    </span>
+    <button class="btn submiteditcomment{{ comment.id }}" type="button">Change</button>
+</form>
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }    
+
+    $('.submiteditcomment{{ comment.id }}').click(function(){
+        var frm = $('.formeditcomment{{ comment.id }}');
+        var clearcomment = $('.cleareditcomment{{ comment.id }}');
+        var contentcomment = $('.contentcomment{{ comment.id }}').val();
+        var csrftoken = getCookie('csrftoken');
+        if (contentcomment == ""){
+            alert("Content cannot be left blank when edit comment!");
+        }else{
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+            $.ajax({
+                type: frm.attr('method'),
+                url: frm.attr('action'),
+                data: frm.serialize(),
+                headers: {
+                    'X-CSRF-Token': csrftoken,
+                },
+                success: function (data) {
+                    $('.div-comment').html(data.html_edit);
+                    $('#successmess').html('<div class="alert alert-success messhome"><strong>You have successfully edited comment.</strong></div></br>');
+                    $('#errmess').html("");
+                },
+                error: function() {
+                    alert('errr');
+                }
+            });
+        }            
+    });
+</script>

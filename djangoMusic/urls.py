@@ -25,6 +25,7 @@ from useractions.views import (
     CreateLyricView, 
     CreateCommentView, 
     DeleteLyricView,
+    EditCommentView,
 )
 from useractions.models import Lyric
 from musics import views
@@ -47,7 +48,9 @@ urlpatterns = [
     url(r'^detail-song/(?P<pk>[-\w]+)$', DetailSongView.as_view(), name='detail-song'),
 
     url(r'^create-lyric/(?P<pk>[-\w]+)$', CreateLyricView.as_view(), name='create-lyric'),
+
     url(r'^create-comment/(?P<pk>[-\w]+)$', CreateCommentView.as_view(), name='create-comment'),
+    url(r'^edit-comment/(?P<pk>[-\w]+)$', EditCommentView.as_view(), name='edit-comment'),
 
     url(r'^detail-song/(?P<pk>[-\w]+)/delete-comment/(?P<comment_id>[-\w]+)$', views.delete_comment, name='delete-comment'),
     
